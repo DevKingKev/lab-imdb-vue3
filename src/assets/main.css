@@ -23,7 +23,7 @@ a,
 div, section {
     display: flex;
     flex-direction: column;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
 }
 
 h1 {

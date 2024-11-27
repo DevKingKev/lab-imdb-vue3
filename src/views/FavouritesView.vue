@@ -1,5 +1,5 @@
 <template>
-  <section class="favourites">
+  <section class="favourites-page">
     <h1>Your favourites</h1>
     <MovieResults list-type="FavouritesList"/>
 
