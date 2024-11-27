@@ -1,11 +1,11 @@
 <template>
   <div class="movie-card">
     <div class="data-display">
-      <div class="poster"><img src="https://via.placeholder.com/150" alt="Movie poster"/></div>
+      <div class="poster"><img :src="movieImageSrc" :alt="moviePosterAltText"/></div>
       <div class="movie-info">
-        <h3>Movie Title</h3>
+        <h3>{{ movie.Title }}</h3>
         <p class="movie-details">
-          <span class="release-year">1983</span>
+          <span class="release-year">{{ movie.Year }}</span>
         </p>
       </div>
     </div>
@@ -14,10 +14,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import FavorActions from './FavourActions.vue';
+import {   computed ,withDefaults} from 'vue'    ;
 
+import FavorActions from './FavourActions.vue';
+import { MovieListItem } from '@/stores/movieStore';
+import { IMovieListProps } from '@/components/MovieList.vue';
+
+interface IMovieCardProps {
+  movie: MovieListItem;
+}
 const isFavourited = true;
+const props = defineProps<IMovieCardProps>() ;
 // props movieDetails   , isFavourited
+const {movie} = props;
+const movieImageSrc = computed(() => {
+  return movie.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movie.Poster;
+});
+const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
 
 </script>
 <style lang="scss" scoped>
@@ -42,6 +55,11 @@ const isFavourited = true;
     max-width: 150px;
     max-height: 150px;
     margin-right: 20px;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   .favour-actions {

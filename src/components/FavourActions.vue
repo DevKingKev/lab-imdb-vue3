@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 const props = defineProps<{
-  isFavourited: boolean ,
+  isFavourited: boolean
 }>();
 const {isFavourited} = props;
 
@@ -28,7 +28,7 @@ $componentDimensions: 50px;
   border: 1px solid #999;
   width: $componentDimensions;
   height: $componentDimensions;
-  border-radius: $componentDimensions / 2;
+  border-radius: calc($componentDimensions / 2);
   justify-content: center;
 
 

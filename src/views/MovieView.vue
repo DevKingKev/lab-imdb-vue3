@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import {useMovieStore} from '@/stores/movies';
+import {useMovieStore} from '@/stores/movieStore';
 import MovieDetails from '../components/MovieDetails.vue';
 
 const movieStore = useMovieStore();

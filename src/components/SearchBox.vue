@@ -1,12 +1,26 @@
 <template>
   <div class="search-box">
-    <form><input type="text" placeholder="Search for a movie"/>
-      <button>Search</button>
+    <form @submit.prevent="onFormSubmit">
+      <input type="text" placeholder="Search for a movie (2 character minimum)" v-model="searchQuery"/>
+      <button :disabled="!searchQuery.length || searchQuery.length < 2">Search</button>
     </form>
   </div>
 
 </template>
 <script setup lang="ts">
+import { ref, Ref } from 'vue';
+
+const props = defineProps<{
+  onInputSearch: (searchQuery: string) => void,
+  searchText: string
+}>();
+const {searchText} = props;
+const searchQuery = (props.searchText)? ref(props.searchText) :ref('');
+const onFormSubmit = () => {
+  if (props.onInputSearch) {
+    props.onInputSearch(searchQuery.value);
+  }
+};
 
 </script>
 <style lang="scss" scoped>
@@ -45,7 +59,7 @@
       max-width: 100%;
 
     }
-    input{
+    input {
       width: 100%;
       margin-bottom: 10px;
     }

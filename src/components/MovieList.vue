@@ -2,10 +2,7 @@
   <div class="movie-list">
     <h2>{{ listHeaderText }}<span class="count"></span></h2>
     <div class="results-list">
-      <MovieCard/>
-      <MovieCard/>
-      <MovieCard/>
-      <MovieCard/>
+      <MovieCard v-for="movieItem in movieList" :key="movieItem.id" :movie="movieItem" />
     </div>
   </div>
 
@@ -15,13 +12,17 @@ import {   computed ,withDefaults} from 'vue'    ;
     export type MovieListType = 'SearchList' | 'FavouritesList';
     export interface IMovieListProps {
       listType?: MovieListType;
+      movieList: MovieListItem[]
     }
 import MovieCard from './MovieCard.vue';
+import { MovieListItem } from '@/stores/movieStore';
 
 const props = withDefaults (defineProps<IMovieListProps>(),{
-  listType: 'SearchList'
+  listType: 'SearchList' ,
+  movieList: []
 }) ;
-const {isFavourited} = props;
+const {movieList} = props;
+console.info('MovieList movieList:', movieList);
 const listHeaderText = computed(() => {
   return props.listType === 'SearchList' ? 'Search results' : 'Favourite movies';
 });
