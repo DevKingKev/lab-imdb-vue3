@@ -35,7 +35,7 @@ const route = useRoute();
 const movieId = route.params.id;
 const movieStore = useMovieStore();
 
-const movie = movieStore.omdbQueryMovieById(movieId as string);
+movieStore.omdbQueryMovieById(movieId as string);
 const {movieToDetail, isQuerying, apiErrors} = storeToRefs(movieStore);
 
 const onAddMovieToFavouritesClick = (movie: MovieListItem) => {

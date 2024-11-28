@@ -1,7 +1,7 @@
 <template>
   <div class="errors-display" v-if="errors.length">
     <div class="errors warning" >
-      <p v-for="error in errors">
+      <p v-for="(error, index) in errors" :key="index">
         {{error}}
       </p>
     </div>

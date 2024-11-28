@@ -1,6 +1,6 @@
 <template>
   <div class="data-value movie-ratings">
-    <div class="movie-attribute movie-rating" v-for="rating in movieRatings">
+    <div class="movie-attribute movie-rating" v-for="rating in movieRatings" :key="rating.Source">
       <span class="source">{{ rating.Source }}:</span> <span class="data-value">{{ rating.Value }}</span>
     </div>
 

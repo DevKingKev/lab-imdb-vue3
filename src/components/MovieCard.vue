@@ -23,7 +23,6 @@ import { computed } from 'vue'    ;
 
 import FavorActions from './FavourActions.vue';
 import {type  MovieListItem } from '@/stores/movieStore';
-import {type  IMovieListProps } from '@/components/MovieList.vue';
 
 interface IMovieCardProps {
   movie: MovieListItem;
