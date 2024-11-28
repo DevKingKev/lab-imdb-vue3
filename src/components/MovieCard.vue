@@ -1,5 +1,5 @@
 <template>
-  <div class="movie-card">
+  <div class="movie-card" :key="movie.imdbID">
     <router-link :to="{ name: 'movie', params: { id: movie.imdbID } }">
       <div class="data-display">
         <div class="poster"><img :src="movieImageSrc" :alt="moviePosterAltText"/></div>
@@ -11,12 +11,15 @@
         </div>
       </div>
     </router-link>
-    <FavorActions :isFavourited="isFavourited"/>
+    <FavorActions
+      :movie="movie"
+      :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
+      :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"/>
 
   </div>
 </template>
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue'    ;
+import { computed, withDefaults, ref, watch } from 'vue'    ;
 
 import FavorActions from './FavourActions.vue';
 import { MovieListItem } from '@/stores/movieStore';
@@ -24,12 +27,15 @@ import { IMovieListProps } from '@/components/MovieList.vue';
 
 interface IMovieCardProps {
   movie: MovieListItem;
+  onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
+  onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }
 
-const isFavourited = true;
+
 const props = defineProps<IMovieCardProps>();
 
 const {movie} = props;
+
 const movieImageSrc = computed(() => {
   return movie.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movie.Poster;
 });
@@ -54,9 +60,9 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
 
     &:hover {
       .poster {
-        img{
-        transform: scale(1.5);
-        transition: transform 0.5s;
+        img {
+          transform: scale(1.5);
+          transition: transform 0.5s;
         }
       }
 
@@ -65,7 +71,7 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 2px 5px rgba(100, 238, 79, 0.3);
+    box-shadow: 0 2px 5px rgba(100, 238, 79, 0.3);
 
   }
 

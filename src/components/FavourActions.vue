@@ -1,21 +1,46 @@
 <template>
-    <div class="favour-actions">
-      <div class="button add" title="Add to favourites" v-if="!isFavourited">+</div>
-      <div class="button remove" title="Remove from favourites" v-if="isFavourited">-</div>
+  <div class="favour-actions">
+    <div class="button add" title="Add to favourites"
+         v-if="!movie.isFavourite">
+      <button v-on:click="onAddToFavouritesButtonClick" class="add">+</button>
     </div>
+    <div class="button remove" title="Remove from favourites"
+         v-if="movie.isFavourite"
+    >
+      <button v-on:click="onRemoveFromFavouritesButtonClick"  class="remove">-</button>
+    </div>
+  </div>
 
 </template>
 <script setup lang="ts">
-const props = defineProps<{
-  isFavourited: boolean
-}>();
-const {isFavourited} = props;
 
-// props isFavourited
+
+import { MovieListItem } from '@/stores/movieStore';
+
+const props = defineProps<{
+  movie: MovieListItem;
+  onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
+  onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
+}>();
+const { movie} = props;
+const onAddToFavouritesButtonClick = () => {
+  console.info('FavourActions onAddToFavouritesButtonClick:', movie, '\nprops:', props);
+  if (props.onAddMovieToFavouritesClick) {
+    props.onAddMovieToFavouritesClick(movie);
+  }
+};
+const onRemoveFromFavouritesButtonClick = () => {
+  console.info('FavourActions onAddToFavouritesButtonClick:', movie, '\nprops:', props);
+  if (props.onRemoveMovieFromFavouritesClick) {
+    props.onRemoveMovieFromFavouritesClick(movie);
+  }
+};
+
 
 </script>
 <style lang="scss" scoped>
 $componentDimensions: 50px;
+$componentDimensionsForSmallerScreen: 80px;
 .favour-actions {
   position: absolute;
   bottom: 0;
@@ -38,13 +63,53 @@ $componentDimensions: 50px;
 
   }
 
-  .button{
-justify-content: center;
+  &:active {
+    background: orange;
+  }
+
+  .button {
+    justify-content: center;
     font-weight: bold;
+    width: 100%;
+
+  }
+
+  button {
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    border-radius: calc($componentDimensions / 2);
+    font-size: 1.5em;
+    justify-content: center;
+    align-items: center;
+
+    &.add {
+
+        background: #639163;
+
+    }
+
+    &.remove {
+
+        background: #c54a2e;
+
+    }
   }
 
   @media (max-width: 800px) {
 
+    width: $componentDimensionsForSmallerScreen;
+    height: $componentDimensionsForSmallerScreen;
+    border-radius: calc($componentDimensionsForSmallerScreen / 2);
+
+
+    button{
+      border-radius: calc($componentDimensionsForSmallerScreen / 2);
+
+    }
+
   }
+
 }
+
 </style>

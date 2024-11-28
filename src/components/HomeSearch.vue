@@ -6,7 +6,11 @@
       <p>Search for a movie</p>
     </div>
     <div v-if="searchStatus.searchedForMovie && movies.length">
-      <MovieResults :movieList="movies"/>
+      <MovieList :movieList="movies"
+                 :onAddMovieToFavouritesClick="onAddMovieToFavourites"
+                 :onRemoveMovieFromFavouritesClick="onRemoveMovieFromFavourites"
+                 :favouriteMovies="favouriteMovies"
+      />
       <div class="clear-list">
         <button @click="onClearSearchResultsButtonClick">Clear search results</button>
       </div>
@@ -22,23 +26,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref ,} from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 
-import { useMovieStore } from '@/stores/movieStore';
+import { MovieListItem, useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
-import MovieResults from './MovieList.vue';
+import MovieList from './MovieList.vue';
 
 const movieStore = useMovieStore();
-const {movies, isQuerying, searchStatus} = storeToRefs(movieStore);
+const {movies, isQuerying, searchStatus, favouriteMovies} = storeToRefs(movieStore);
 
-// const {searchText} = storeToRefs(useMovieStore);
+
 const searchText = movieStore.getSearchText();
-console.info('HomeSearch searchText:', searchText);
+console.info('HomeSearch searchText:', searchText,
+  '\nfavouriteMovies:', favouriteMovies);
 
-// props searchText, searchData, favouritesList
-// functions: addToFavourites, removeFromFavourites
 
 const onSearchBoxSubmit = (searchQuery: string) => {
   searchStatus.value.searchedForMovie = true;
@@ -49,11 +52,19 @@ const onClearSearchResultsButtonClick = () => {
   movieStore.resetSearchData();
   searchStatus.value.searchedForMovie = false;
 };
+const onAddMovieToFavourites = (movie: MovieListItem) => {
+  console.info('HomeSearch onAddMovieToFavourites:', movie);
+  movieStore.addMovieToFavourites(movie);
+};
+const onRemoveMovieFromFavourites = (movie: MovieListItem) => {
+  console.info('HomeSearch  onRemoveMovieFromFavourites:', movie);
+  movieStore.removeMovieFromFavourites(movie);
+};
 
 </script>
 <style lang="scss" scoped>
 .home-search {
-  .searching{
+  .searching {
     .text {
       display: inline-flex;
       animation: growAndShrink 2.5s ease-in-out infinite;
@@ -70,12 +81,13 @@ const onClearSearchResultsButtonClick = () => {
   }
 
   @media (max-width: 800px) {
-       .clear-list{
-         align-items: center;
-         button {
-           width: 80%;
-         }
-       }
+    .clear-list {
+      align-items: center;
+
+      button {
+        width: 80%;
+      }
+    }
   }
 }
 </style>

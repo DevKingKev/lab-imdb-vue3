@@ -59,7 +59,9 @@ const omdbAPIKey = '30ba7fc1';
 export const useMovieStore = defineStore('movies', () => {
 
   const searchData = ref<MovieListItem[]>([]);
-  const favouriteMoviesData = ref<MovieListItem[]>([]);
+  // const favouriteMoviesData = ref<MovieListItem[]>([]);
+  const storedFavourites = localStorage.getItem('favouriteMovies');
+
 
   const searchText = ref('');
   const apiErrors = ref<string[]>([]);
@@ -67,69 +69,37 @@ export const useMovieStore = defineStore('movies', () => {
   const isQuerying = ref(false);
   const movieToDetail = ref<MovieDetails | undefined>(undefined);
 
+  const favouriteMovies = ref<MovieListItem[]>([]);
+
+
+  if (storedFavourites) {
+    favouriteMovies.value =  Array.from(JSON.parse(storedFavourites)).sort((a, b) => a.Year.localeCompare(b.Year));
+  } else {
+    localStorage.setItem('favouriteMovies', JSON.stringify([]));
+  }
+  console.info('movieStore storedFavourites:', storedFavourites,
+    '\nfavouriteMovies:', favouriteMovies.value);
   const searchStatus: SearchStatus = ref({
     searchedForMovie: false,
     queryCompleted: false,
     queryReturnedEmpty: false,
   });
-  favouriteMoviesData.value = [
-    {
-      'Title': 'Rambo',
-      'Year': '2008',
-      'imdbID': 'tt0462499',
-      'Type': 'movie',
-      'Poster': 'https://m.media-amazon.com/images/M/MV5BMTI5Mjg1MzM4NF5BMl5BanBnXkFtZTcwNTAyNzUzMw@@._V1_SX300.jpg',
-    },
-    {
-      'Title': 'Rambo: First Blood Part II',
-      'Year': '1985',
-      'imdbID': 'tt0089880',
-      'Type': 'movie',
-      'Poster': 'https://m.media-amazon.com/images/M/MV5BNTNiMzUyZjQtY2RlOS00MjIxLWFlMjAtNjI1NjkzY2JjN2M3XkEyXkFqcGc@._V1_SX300.jpg',
-    }];
+  // favouriteMoviesData.value = [
+  //   {
+  //     'Title': 'Rambo',
+  //     'Year': '2008',
+  //     'imdbID': 'tt0462499',
+  //     'Type': 'movie',
+  //     'Poster': 'https://m.media-amazon.com/images/M/MV5BMTI5Mjg1MzM4NF5BMl5BanBnXkFtZTcwNTAyNzUzMw@@._V1_SX300.jpg',
+  //   },
+  //   {
+  //     'Title': 'Rambo: First Blood Part II',
+  //     'Year': '1985',
+  //     'imdbID': 'tt0089880',
+  //     'Type': 'movie',
+  //     'Poster': 'https://m.media-amazon.com/images/M/MV5BNTNiMzUyZjQtY2RlOS00MjIxLWFlMjAtNjI1NjkzY2JjN2M3XkEyXkFqcGc@._V1_SX300.jpg',
+  //   }];
 
-
-  const favouriteMovies = getFavouriteMovies();
-  const mockMovie: MovieDetails = {
-    'Title': 'Rambo',
-    'Year': '2008',
-    'Rated': 'R',
-    'Released': '25 Jan 2008',
-    'Runtime': '92 min',
-    'Genre': 'Action, Adventure, Thriller',
-    'Director': 'Sylvester Stallone',
-    'Writer': 'Art Monterastelli, Sylvester Stallone, David Morrell',
-    'Actors': 'Sylvester Stallone, Julie Benz, Matthew Marsden',
-    'Plot': 'In Thailand, John Rambo joins a group of mercenaries to venture into war-torn Burma, and rescue a group of Christian aid workers who were kidnapped by the ruthless local infantry unit.',
-    'Language': 'English, Burmese, Thai',
-    'Country': 'Germany, United States',
-    'Awards': '1 win & 1 nomination',
-    'Poster': 'https://m.media-amazon.com/images/M/MV5BMTI5Mjg1MzM4NF5BMl5BanBnXkFtZTcwNTAyNzUzMw@@._V1_SX300.jpg',
-    'Ratings': [
-      {
-        'Source': 'Internet Movie Database',
-        'Value': '7.0/10',
-      },
-      {
-        'Source': 'Rotten Tomatoes',
-        'Value': '38%',
-      },
-      {
-        'Source': 'Metacritic',
-        'Value': '46/100',
-      },
-    ],
-    'Metascore': '46',
-    'imdbRating': '7.0',
-    'imdbVotes': '248,136',
-    'imdbID': 'tt0462499',
-    'Type': 'movie',
-    'DVD': 'N/A',
-    'BoxOffice': '$42,754,105',
-    'Production': 'N/A',
-    'Website': 'N/A',
-    'Response': 'True',
-  };
 
   function filterForMovies(data: MovieListItem[]): MovieListItem[] {
     return data.filter((movie) => movie.Type === 'movie');
@@ -139,22 +109,28 @@ export const useMovieStore = defineStore('movies', () => {
     return filterForMovies(searchData.value);
   }
 
+  // function ensureUniqueList(data: MovieListItem[]): MovieListItem[] {
+  //   const uniqueList = Array.from(new Set(favouriteMovies.value.map(m => m.imdbID)))
+  //     .map(id => favouriteMovies.value.find(m => m.imdbID === id));
+  //   return uniqueList;
+  // }
+
   function getFavouriteMovies() {
-    return favouriteMoviesData;
+    return favouriteMovies;
   }
 
   function getFavouriteMovieIDs(): string[] {
-    return favouriteMoviesData.value.map((movie) => movie.imdbID);
+    return favouriteMovies.value.map((movie) => movie.imdbID);
   }
 
-  function getMovieByID(id: string): MovieDetails | undefined {
-    const found = searchData.value.find((movie) => movie.imdbID === id);
-    if (found) {
-      return mockMovie;
-    } else {
-      return undefined;
-    }
-  }
+  // function getMovieByID(id: string): MovieDetails | undefined {
+  //   const found = searchData.value.find((movie) => movie.imdbID === id);
+  //   if (found) {
+  //     return mockMovie;
+  //   } else {
+  //     return undefined;
+  //   }
+  // }
 
   const omdbQuery = async (searchText: string) => {
     try {
@@ -166,7 +142,14 @@ export const useMovieStore = defineStore('movies', () => {
 
           searchData.value = filterForMovies(response.data.Search);
           searchData.value.sort((a, b) => a.Year.localeCompare(b.Year));
-          searchData.value.sort((a, b) => a.Year.localeCompare(b.Year));
+
+          favouriteMovies.value.forEach((favourite) => {
+            const found = searchData.value.find((movie) => movie.imdbID === favourite.imdbID);
+            if (found) {
+              found.isFavourite = true;
+            }
+          });
+
           movies.value = getMovies();
           console.info('movieStore searchData:', searchData.value, 'movies:', movies.value);
         }
@@ -226,7 +209,44 @@ export const useMovieStore = defineStore('movies', () => {
     movies.value = [];
   }
 
-  watch([movies], (mutation: any, state: any, some: any) => {
+  function addMovieToFavourites(movie: MovieListItem) {
+    console.info('movieStore removeMovieFromFavourites before addition:',
+      '\nfavouriteMovies.value:', favouriteMovies.value,
+      '\nmovie:', movie);
+    const found = favouriteMovies.value.find((m) => m.imdbID === movie.imdbID);
+    movie.isFavourite = true;
+    if (!found) {
+      favouriteMovies.value.push(movie);
+    }
+    favouriteMovies.values = favouriteMovies.value.sort((a, b) => a.Year.localeCompare(b.Year));
+
+    localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
+    console.info('movieStore removeMovieFromFavourites after addition:',
+      '\nfavouriteMovies.value:', favouriteMovies.value,
+      '\nmovie:', movie);
+  }
+
+  function removeMovieFromFavourites(movie: MovieListItem) {
+    console.info('movieStore removeMovieFromFavourites before Removal:',
+      '\nfavouriteMovies.value:', favouriteMovies.value,
+      '\nmovie:', movie,
+      '\n movie.isFavourite:',  movie.isFavourite);
+    movie.isFavourite = false;
+    const index = favouriteMovies.value.findIndex((m) => m.imdbID === movie.imdbID);
+    if (index > -1) {
+      console.info('index is greater than < 1:', index);
+      favouriteMovies.value.splice(index, 1);
+    }
+    // favouriteMovies.values = favouriteMovies.value;
+
+    localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
+
+    console.info('movieStore removeMovieFromFavourites after Removal:',
+      '\nfavouriteMovies.value:', favouriteMovies.value,
+      '\nmovie:', movie);
+  }
+
+  watch([movies, favouriteMovies], (mutation: any, state: any, some: any) => {
     console.info('movieStore -> watch->count:',
       '\nmovies: ', movies,
       '\nmutation: ', mutation,
@@ -242,8 +262,10 @@ export const useMovieStore = defineStore('movies', () => {
     movieToDetail,
     favouriteMovies,
     isQuerying,
-    getMovieByID,
+    // getMovieByID,
     getFavouriteMovies,
+    addMovieToFavourites,
+    removeMovieFromFavourites,
     omdbQueryMovieById,
     updateSearchText,
     getSearchText,
