@@ -175,7 +175,6 @@ export const useMovieStore = defineStore('movies', () => {
     favouriteMovies.value = favouriteMovies.value.sort((a, b) => a.Year.localeCompare(b.Year));
 
     localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
-
   }
 
   function removeMovieFromFavourites(movie: MovieListItem) {
@@ -197,11 +196,10 @@ export const useMovieStore = defineStore('movies', () => {
     } else {
       localStorage.setItem('favouriteMovies', JSON.stringify([]));
     }
-
   }
 
   function updateMovieReferencesForFavourite(movie: MovieListItem, value: boolean) {
-    if (movieToDetail && movieToDetail.value && movieToDetail.value.imdbID === movie.imdbID) {
+    if ( movieToDetail?.value?.imdbID === movie.imdbID) {
       movieToDetail.value.isFavourite = value;
     }
 

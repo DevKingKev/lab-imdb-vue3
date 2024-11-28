@@ -5,27 +5,35 @@
              v-model="searchQuery"
              autofocus
              ref="searchTextInput"/>
-      <button :disabled="!searchQuery.length || searchQuery.length < 2">Search</button>
+      <button :disabled="searchIsDisabled">{{ searchButtonText }}</button>
     </form>
   </div>
 
 </template>
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 const props = defineProps<{
   onInputSearch: (searchQuery: string) => void,
-  searchText: string
+  searchText: string,
+  isQuerying?: boolean
 }>();
 const {searchText} = props;
-const searchQuery = (searchText)? ref(searchText) :ref('');
+const searchQuery = (searchText) ? ref(searchText) : ref('');
 const searchTextInput = ref<HTMLInputElement | null>(null);
 
+const searchButtonText = computed(() => {
+  return props.isQuerying ? 'Searching...' : 'Search';
+});
+
+const searchIsDisabled = computed(() => {
+  return !searchQuery.value.length || searchQuery.value.length < 2 || props.isQuerying;
+});
 onMounted(() => {
   setTimeout(() => {
-    if((searchTextInput.value))  {
-     searchTextInput.value.focus()  ;
-  }
+    if ((searchTextInput.value)) {
+      searchTextInput.value.focus();
+    }
   }, 500);
 
 });

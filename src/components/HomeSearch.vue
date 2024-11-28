@@ -1,7 +1,9 @@
 <template>
   <div class="home-search">
     <h1>Movie Search</h1>
-    <SearchBox :onInputSearch="onSearchBoxSubmit" :searchText="searchText"/>
+    <SearchBox :onInputSearch="onSearchBoxSubmit"
+               :searchText="searchText"
+               :isQuerying="isQuerying"/>
     <div v-if="!searchStatus.searchedForMovie">
       <p>Search for a movie</p>
     </div>
