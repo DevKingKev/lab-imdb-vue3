@@ -14,7 +14,7 @@
         />
       </div>
       <div v-else>
-        <p class="warning">Movie not found</p>
+        <p class="warning">Movie not found. It may not exist.</p>
       </div>
     </div>
 

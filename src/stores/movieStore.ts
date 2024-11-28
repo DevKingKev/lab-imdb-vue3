@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
@@ -82,10 +82,6 @@ export const useMovieStore = defineStore('movies', () => {
     return filterForMovies(searchData.value);
   }
 
-  function getFavouriteMovieIDs(): string[] {
-    return favouriteMovies.value.map((movie) => movie.imdbID);
-  }
-
   const omdbQuery = async (searchText: string) => {
     try {
       const response = await axios.get(`${omdpAPIURL}?apikey=${omdbAPIKey}&s=${searchText}`);
@@ -109,11 +105,12 @@ export const useMovieStore = defineStore('movies', () => {
         }
 
       } else {
-        throw new Error(response.data.Error);
+        const errorMessage = `Movie not found. Make sure you have the right spelling!`;
+        apiErrors.value.push(errorMessage);
       }
     } catch (error: any) {
       console.error('movieStore -> omdbQuery :', error.toString());
-      const errorMessage = `Failed in fetching list of movies, ${error.toString()}. Try again later!`;
+      const errorMessage = `Failed in fetching list of movies, "${error.toString()}". Try again later!`;
       apiErrors.value.push(errorMessage);
     }
   };
@@ -136,11 +133,12 @@ export const useMovieStore = defineStore('movies', () => {
 
         return response.data;
       } else {
-        throw new Error(response.data.Error);
+        const errorMessage = `Movie not found. Make sure you have the right imdb id for the movie!`;
+        apiErrors.value.push(errorMessage);
       }
     } catch (error: any) {
       console.error('movieStore -> omdbQueryMovieById :', error.toString());
-      const errorMessage = `Failed to fetch movie, ${error.toString()}.  Check if the movie exists and try again later!`;
+      const errorMessage = `Failed to fetch movie, "${error.toString()}".  Check if the movie exists and try again later!`;
       apiErrors.value.push(errorMessage);
     }
   };
