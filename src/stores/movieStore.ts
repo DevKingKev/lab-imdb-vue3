@@ -47,18 +47,31 @@ export interface MovieDetails {
   Response: string;
 }
 
+interface SearchStatus {
+  searchedForMovie: boolean;
+  queryCompleted: boolean;
+  queryReturnedEmpty: boolean;
+}
+
 const omdpAPIURL = 'http://www.omdbapi.com/';
 const omdbAPIKey = '30ba7fc1';
 
-export const useMovieStore = defineStore( 'movies', () => {
+export const useMovieStore = defineStore('movies', () => {
 
-  const searchData = ref<MovieListItem[]>( [] );
-  const favouriteMoviesData = ref<MovieListItem[]>( [] );
+  const searchData = ref<MovieListItem[]>([]);
+  const favouriteMoviesData = ref<MovieListItem[]>([]);
 
-  const searchText = ref( '' );
-  const apiErrors = ref<string[]>( [] );
-  const movies = ref( getMovies() );
+  const searchText = ref('');
+  const apiErrors = ref<string[]>([]);
+  const movies = ref(getMovies());
   const isQuerying = ref(false);
+  const movieToDetail = ref<MovieDetails | undefined>(undefined);
+
+  const searchStatus: SearchStatus = ref({
+    searchedForMovie: false,
+    queryCompleted: false,
+    queryReturnedEmpty: false,
+  });
   favouriteMoviesData.value = [
     {
       'Title': 'Rambo',
@@ -118,74 +131,92 @@ export const useMovieStore = defineStore( 'movies', () => {
     'Response': 'True',
   };
 
-  function filterForMovies ( data: MovieListItem[] ): MovieListItem[] {
-    return data.filter( ( movie ) => movie.Type === 'movie' );
+  function filterForMovies(data: MovieListItem[]): MovieListItem[] {
+    return data.filter((movie) => movie.Type === 'movie');
   }
 
-  function getMovies () {
-    return filterForMovies( searchData.value );
+  function getMovies() {
+    return filterForMovies(searchData.value);
   }
 
-  function getFavouriteMovies () {
+  function getFavouriteMovies() {
     return favouriteMoviesData;
   }
 
-  function getFavouriteMovieIDs (): string[] {
-    return favouriteMoviesData.value.map( ( movie ) => movie.imdbID );
+  function getFavouriteMovieIDs(): string[] {
+    return favouriteMoviesData.value.map((movie) => movie.imdbID);
   }
 
-  function getMovieByID ( id: string ): MovieDetails | undefined {
-    const found = searchData.value.find( ( movie ) => movie.imdbID === id );
-    if ( found )
-    {
+  function getMovieByID(id: string): MovieDetails | undefined {
+    const found = searchData.value.find((movie) => movie.imdbID === id);
+    if (found) {
       return mockMovie;
-    } else
-    {
+    } else {
       return undefined;
     }
   }
 
-  const omdbQuery = async ( searchText: string ) => {
-    try
-    {
-      const response = await axios.get( `${omdpAPIURL}?apikey=${omdbAPIKey}&s=${searchText}` );
-      console.info( 'movieStore omdbQuery response:', response );
+  const omdbQuery = async (searchText: string) => {
+    try {
+      const response = await axios.get(`${omdpAPIURL}?apikey=${omdbAPIKey}&s=${searchText}`);
+      console.info('movieStore omdbQuery response:', response);
       isQuerying.value = false;
-      if(response.data.Response === 'True'){
+      if (response.data.Response === 'True') {
         if (response.data?.Search) {
 
           searchData.value = filterForMovies(response.data.Search);
+          searchData.value.sort((a, b) => a.Year.localeCompare(b.Year));
+          searchData.value.sort((a, b) => a.Year.localeCompare(b.Year));
           movies.value = getMovies();
           console.info('movieStore searchData:', searchData.value, 'movies:', movies.value);
         }
-      }    else{
-        // throw new Error(response.data.Error);
+      } else {
+        throw new Error(response.data.Error);
       }
-    } catch ( error )
-    {
+    } catch (error) {
 
-      console.error( 'Error fetching data:', error );
-      apiErrors.value.push( error );
+      // console.error( 'Error fetching data:', error );
+      apiErrors.value.push(error);
     }
   };
 
-  function isFavouriteMovie ( id: string ): boolean {
-    return getFavouriteMovieIDs().includes( id );
+  const omdbQueryMovieById = async (imdbID: string): Promise<MovieDetails> => {
+    movieToDetail.value = undefined;
+    try {
+      isQuerying.value = true;
+      const response = await axios.get(`${omdpAPIURL}?apikey=${omdbAPIKey}&i=${imdbID}`);
+      console.info('movieStore omdbQueryMovieById response:', response);
+      isQuerying.value = false;
+      if (response.data.Response === 'True') {
+        movieToDetail.value = response.data;
+        console.info('movieStore omdbQueryMovieById: \nresponse.data', response.data, 'movieToDetail.value:', movieToDetail.value);
+        return response.data;
+      } else {
+        throw new Error(response.data.Error);
+      }
+    } catch (error) {
+
+      console.error('Error fetching data:', error);
+      apiErrors.value.push(error);
+    }
+  };
+
+  function isFavouriteMovie(id: string): boolean {
+    return getFavouriteMovieIDs().includes(id);
   }
 
-  function getSearchText () {
+  function getSearchText() {
     return searchText.value;
   }
 
-  function updateSearchText ( text: string ) {
+  function updateSearchText(text: string) {
     searchText.value = text;
-    console.info( 'movieStore searchText:', searchText.value );
-    if ( text.length > 2 )
-    {
+    console.info('movieStore searchText:', searchText.value);
+    if (text.length > 2) {
       isQuerying.value = true;
-      omdbQuery( text ) ;
+      omdbQuery(text);
       resetSearchData();
-    }  else{
+    } else {
       resetSearchData();
     }
   }
@@ -195,25 +226,28 @@ export const useMovieStore = defineStore( 'movies', () => {
     movies.value = [];
   }
 
-  watch( [movies], ( mutation: any, state: any, some: any ) => {
-    console.info( 'movieStore -> watch->count:',
+  watch([movies], (mutation: any, state: any, some: any) => {
+    console.info('movieStore -> watch->count:',
       '\nmovies: ', movies,
       '\nmutation: ', mutation,
       '\nstate:', state,
-      '\nsome:', some );
-  } );
+      '\nsome:', some);
+  });
 
 
   return {
     searchData,
+    searchStatus,
     movies,
+    movieToDetail,
     favouriteMovies,
     isQuerying,
     getMovieByID,
     getFavouriteMovies,
+    omdbQueryMovieById,
     updateSearchText,
     getSearchText,
     resetSearchData,
     apiErrors,
   };
-} );
+});

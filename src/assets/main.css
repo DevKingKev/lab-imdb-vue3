@@ -47,6 +47,21 @@ button:hover {
     cursor: pointer;
 }
 
+.warning{
+    color: #D04E4EFF;
+    font-size: 1.2em;
+}
+@keyframes growAndShrink {
+    0% {
+        transform: scale(1) ;
+    }
+    50% {
+        transform: scale(2.5)  translateY(50px) translateX(50px);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 @media (hover: hover) {
     a:hover {
         background-color: hsla(160, 100%, 37%, 0.2);

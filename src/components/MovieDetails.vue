@@ -1,7 +1,7 @@
 <template>
   <div class="movie-details">
     <div class="data-display">
-      <div class="poster"><img :src="movieData.Poster" :alt="movieAltText"/></div>
+      <div class="poster"><img :src="movieImageSrc" :alt="movieAltText"/></div>
       <div class="movie-info">
         <h3>{{ movieData.Title }}</h3>
         <div class="movie-details">
@@ -38,6 +38,10 @@ const props = defineProps<{
 const {movieData} = props;
 
 const isFavourited = true;
+
+const movieImageSrc = computed(() => {
+  return movieData.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movieData.Poster;
+});
 const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
 
 // props movieDetails   , isFavourited
@@ -85,6 +89,11 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
       width: 100%;
       height: 100%;
       object-fit: contain;
+      &:hover {
+        transform: scale(1.5) translateY(40px) translateX(50px);
+        transition: transform 0.5s ;
+        z-index: 2;
+      }
     }
   }
 

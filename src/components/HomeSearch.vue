@@ -12,37 +12,26 @@
       </div>
     </div>
     <div v-if="searchStatus.searchedForMovie && !movies.length && !isQuerying">
-      <p>No movies found for that search phrase</p>
+      <p class="warning">No movies found for that search phrase</p>
     </div>
     <div v-if="searchStatus.searchedForMovie && isQuerying">
-      <p>Searching...</p>
+      <p class="searching"><span class="text">Searching...</span></p>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref ,} from 'vue';
 import { storeToRefs } from 'pinia';
 
-interface SearchStatus {
-  searchedForMovie: boolean;
-  queryCompleted: boolean;
-  queryReturnedEmpty: boolean;
-}
-
-const searchStatus: SearchStatus = ref({
-  searchedForMovie: false,
-  queryCompleted: false,
-  queryReturnedEmpty: false,
-});
 
 import { useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
 import MovieResults from './MovieList.vue';
 
 const movieStore = useMovieStore();
-const {movies, isQuerying} = storeToRefs(movieStore);
+const {movies, isQuerying, searchStatus} = storeToRefs(movieStore);
 
 // const {searchText} = storeToRefs(useMovieStore);
 const searchText = movieStore.getSearchText();
@@ -64,6 +53,13 @@ const onClearSearchResultsButtonClick = () => {
 </script>
 <style lang="scss" scoped>
 .home-search {
+  .searching{
+    .text {
+      display: inline-flex;
+      animation: growAndShrink 2.5s ease-in-out infinite;
+    }
+  }
+
   .clear-list {
     margin-top: 20px;
 

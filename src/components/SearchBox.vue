@@ -1,21 +1,34 @@
 <template>
   <div class="search-box">
     <form @submit.prevent="onFormSubmit">
-      <input type="text" placeholder="Search for a movie (2 character minimum)" v-model="searchQuery"/>
+      <input type="text" placeholder="Search for a movie (2 character minimum)"
+             v-model="searchQuery"
+             autofocus
+             ref="searchTextInput"/>
       <button :disabled="!searchQuery.length || searchQuery.length < 2">Search</button>
     </form>
   </div>
 
 </template>
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
+import { ref, Ref ,onMounted} from 'vue';
 
 const props = defineProps<{
   onInputSearch: (searchQuery: string) => void,
   searchText: string
 }>();
 const {searchText} = props;
-const searchQuery = (props.searchText)? ref(props.searchText) :ref('');
+const searchQuery = (searchText)? ref(searchText) :ref('');
+const searchTextInput = ref<HTMLInputElement | null>(null);
+
+onMounted(() => {
+  setTimeout(() => {
+    if((searchTextInput.value))  {
+     searchTextInput.value.focus()  ;
+  }
+  }, 500);
+
+});
 const onFormSubmit = () => {
   if (props.onInputSearch) {
     props.onInputSearch(searchQuery.value);
