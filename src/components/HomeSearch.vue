@@ -22,6 +22,9 @@
       <p class="searching"><span class="text">Searching...</span></p>
     </div>
 
+    <div v-if="apiErrors.length">
+      <ErrorsDisplay :errors="apiErrors"/>
+    </div>
   </div>
 </template>
 
@@ -30,12 +33,13 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 
-import {type  MovieListItem, useMovieStore } from '@/stores/movieStore';
+import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
 import MovieList from './MovieList.vue';
+import ErrorsDisplay from './ErrorsDisplay.vue';
 
 const movieStore = useMovieStore();
-const {movies, isQuerying, searchStatus, favouriteMovies} = storeToRefs(movieStore);
+const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors} = storeToRefs(movieStore);
 
 
 const searchText = movieStore.getSearchText();

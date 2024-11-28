@@ -98,8 +98,9 @@ export const useMovieStore = defineStore('movies', () => {
 
       isQuerying.value = false;
       if (response.data.Response === 'True') {
-        if (response.data?.Search) {
+        apiErrors.value = [];
 
+        if (response.data?.Search) {
           searchData.value = filterForMovies(response.data.Search);
           searchData.value.sort((a, b) => a.Year.localeCompare(b.Year));
 
@@ -112,11 +113,14 @@ export const useMovieStore = defineStore('movies', () => {
 
           movies.value = getMovies();
         }
+
       } else {
-        throw new Error(response.data.Response);
+        throw new Error(response.data.Error);
       }
     } catch (error:any) {
-      apiErrors.value.push(error.toString());
+      console.error('movieStore -> omdbQuery :', error.toString());
+      const errorMessage = `Failed in fetching list of movies, ${error.toString()}. Try again later!`
+      apiErrors.value.push(errorMessage);
     }
   };
 
@@ -128,7 +132,7 @@ export const useMovieStore = defineStore('movies', () => {
 
       isQuerying.value = false;
       if (response.data.Response === 'True') {
-
+           apiErrors.value = [];
         const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === imdbID);
         if (isFavourited) {
           movieToDetail.value = {...response.data, isFavourite: isFavourited};
@@ -141,8 +145,9 @@ export const useMovieStore = defineStore('movies', () => {
         throw new Error(response.data.Error);
       }
     } catch (error:any) {
-
-      apiErrors.value.push(error.toString());
+      console.error('movieStore -> omdbQueryMovieById :', error.toString());
+      const errorMessage = `Failed to fetch movie, ${error.toString()}.  Check if the movie exists and try again later!`
+      apiErrors.value.push(errorMessage);
     }
   };
 

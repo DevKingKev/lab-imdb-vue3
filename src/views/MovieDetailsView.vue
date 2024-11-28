@@ -17,6 +17,10 @@
         <p class="warning">Movie not found</p>
       </div>
     </div>
+
+    <div v-if="apiErrors.length">
+      <ErrorsDisplay :errors="apiErrors"/>
+    </div>
   </section>
 </template>
 
@@ -24,6 +28,7 @@
 import { useRoute } from 'vue-router';
 import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import MovieDetails from '../components/MovieDetails.vue';
+import ErrorsDisplay from '../components/ErrorsDisplay.vue';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute();
@@ -31,7 +36,7 @@ const movieId = route.params.id;
 const movieStore = useMovieStore();
 
 const movie = movieStore.omdbQueryMovieById(movieId as string);
-const {movieToDetail, isQuerying, favouriteMovies} = storeToRefs(movieStore);
+const {movieToDetail, isQuerying, apiErrors} = storeToRefs(movieStore);
 // const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === movieId);
 // if (isFavourited) {
 //   movieToDetail.isFavourite = true;
