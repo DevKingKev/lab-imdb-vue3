@@ -19,11 +19,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, withDefaults, ref, watch } from 'vue'    ;
+import { computed } from 'vue'    ;
 
 import FavorActions from './FavourActions.vue';
-import { MovieListItem } from '@/stores/movieStore';
-import { IMovieListProps } from '@/components/MovieList.vue';
+import {type  MovieListItem } from '@/stores/movieStore';
+import {type  IMovieListProps } from '@/components/MovieList.vue';
 
 interface IMovieCardProps {
   movie: MovieListItem;
@@ -48,6 +48,7 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
   display: flex;
   padding: 10px;
   margin: 20px 10px;
+  min-height: 150px;
   box-shadow: 0 2px 5px rgba(79, 140, 238, 0.3);
 
   a {

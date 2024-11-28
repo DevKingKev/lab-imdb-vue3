@@ -1,6 +1,6 @@
 <template>
   <div class="movie-list">
-    <h2>{{ listHeaderText }}<span class="count"></span></h2>
+    <h2>{{ listHeaderText }} <span class="count">({{movieList.length}})</span></h2>
     <div class="results-list">
       <MovieCard v-for="movieItem in movieList"
                  :key="movieItem.imdbID"
@@ -25,14 +25,13 @@ export interface IMovieListProps {
 }
 
 import MovieCard from './MovieCard.vue';
-import { MovieListItem } from '@/stores/movieStore';
+import { type MovieListItem } from '@/stores/movieStore';
 
 const props = withDefaults(defineProps<IMovieListProps>(), {
   listType: 'SearchList',
-  movieList: [],
 });
 const {movieList} = props;
-console.info('MovieList movieList:', movieList);
+
 const listHeaderText = computed(() => {
   return props.listType === 'SearchList' ? 'Search results' : 'Favourite movies';
 });
@@ -48,7 +47,7 @@ const listHeaderText = computed(() => {
   }
 
   .movie-card {
-    max-width: 400px;
+    max-width: 100%;
   }
 
   @media (max-width: 800px) {

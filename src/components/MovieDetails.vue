@@ -21,30 +21,43 @@
         </div>
       </div>
     </div>
-    <FavorActions :isFavourited="isFavourited"/>
+    <FavorActions :isFavourited="isFavourited"
+                  :movie="movieListItem"
+                  :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
+                  :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
+                  v-if="props.onAddMovieToFavouritesClick && props.onRemoveMovieFromFavouritesClick"/>
 
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 
 import FavorActions from './FavourActions.vue';
 import MovieRatings from './MovieRatings.vue';
-import { MovieDetails } from '@/stores/movies';
+import {type MovieDetails, type MovieListItem } from '@/stores/movieStore';
 
 const props = defineProps<{
   movieData: MovieDetails,
+  onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
+  onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
 const {movieData} = props;
 
 const isFavourited = true;
 
+const movieListItem = ref({
+  Title: movieData.Title,
+  Year: movieData.Year,
+  imdbID: movieData.imdbID,
+  Type: movieData.Type,
+  Poster: movieData.Poster,
+  isFavourite: movieData.isFavourite
+});
+
 const movieImageSrc = computed(() => {
   return movieData.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movieData.Poster;
 });
 const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
-
-// props movieDetails   , isFavourited
 
 </script>
 <style lang="scss" scoped>
@@ -53,7 +66,6 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
   display: flex;
   flex: 0 1 auto;
   margin-top: 10px;
-  //box-shadow: 0px 2px 5px rgba(79, 140, 238, 0.3);
 
   .data-display {
     flex-direction: row;
@@ -105,6 +117,8 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
   }
 
   @media (max-width: 800px) {
+    padding-bottom: 50px;
+
     .data-display {
       flex-direction: column;
     }

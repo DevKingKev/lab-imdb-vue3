@@ -9,8 +9,8 @@ import HelloWorld from './components/HelloWorld.vue';
 
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/favourites">Favourites</RouterLink>
+        <RouterLink to="/" tabindex="0">Home</RouterLink>
+        <RouterLink to="/favourites" tabindex="0">Favourites</RouterLink>
       </nav>
     </div>
   </header>
@@ -28,13 +28,14 @@ header {
   padding-right: calc(var(--section-gap) / 2);
   line-height: 1.5;
   height: $headerHeight;
-  border: 1px solid #0F0;
+  border-bottom: 1px solid #0F0;
 }
 
 .logo {
   display: inline-flex;
   margin: 0 2rem 0 0;
   max-height: 100%;
+  padding: 10px;
 }
 
 nav {
@@ -46,6 +47,7 @@ nav {
 
 nav a.router-link-exact-active {
   color: var(--color-text);
+
 }
 
 nav a.router-link-exact-active:hover {
@@ -54,8 +56,9 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
+  padding: 1rem;
   border-left: 1px solid var(--color-border);
+
 }
 
 nav a:first-of-type {
@@ -63,8 +66,7 @@ nav a:first-of-type {
 }
 
 main {
-  //height: calc(100vh - $headerHeight);
-  border: 1px solid #F00;
+
   overflow-y: auto;
   padding: 10px;
 }

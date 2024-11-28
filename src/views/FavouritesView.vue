@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useMovieStore } from '@/stores/movieStore';
-import { MovieListItem } from '@/stores/movieStore';
+import { type MovieListItem } from '@/stores/movieStore';
 
 
 import MovieList from '../components/MovieList.vue';
@@ -20,19 +20,16 @@ const movieStore = useMovieStore();
 const {favouriteMovies} = storeToRefs(movieStore);
 
 const onAddMovieToFavourites = (movie: MovieListItem) => {
-  console.info('FavouritesView onAddMovieToFavourites:', movie);
   movieStore.addMovieToFavourites(movie);
 };
 const onRemoveMovieFromFavourites = (movie: MovieListItem) => {
-  console.info('FavouritesView  onRemoveMovieFromFavourites:', movie);
   movieStore.removeMovieFromFavourites(movie);
 };
 
 </script>
 <style>
 @media (min-width: 1024px) {
-  .favourites {
-    display: flex;
+  .favourites-page {
   }
 }
 </style>

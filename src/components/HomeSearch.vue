@@ -30,7 +30,7 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 
-import { MovieListItem, useMovieStore } from '@/stores/movieStore';
+import {type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
 import MovieList from './MovieList.vue';
 
@@ -39,13 +39,9 @@ const {movies, isQuerying, searchStatus, favouriteMovies} = storeToRefs(movieSto
 
 
 const searchText = movieStore.getSearchText();
-console.info('HomeSearch searchText:', searchText,
-  '\nfavouriteMovies:', favouriteMovies);
-
 
 const onSearchBoxSubmit = (searchQuery: string) => {
   searchStatus.value.searchedForMovie = true;
-  console.log('HomeSearch onSearchBoxSubmit:', searchQuery);
   movieStore.updateSearchText(searchQuery);
 };
 const onClearSearchResultsButtonClick = () => {
@@ -53,11 +49,9 @@ const onClearSearchResultsButtonClick = () => {
   searchStatus.value.searchedForMovie = false;
 };
 const onAddMovieToFavourites = (movie: MovieListItem) => {
-  console.info('HomeSearch onAddMovieToFavourites:', movie);
   movieStore.addMovieToFavourites(movie);
 };
 const onRemoveMovieFromFavourites = (movie: MovieListItem) => {
-  console.info('HomeSearch  onRemoveMovieFromFavourites:', movie);
   movieStore.removeMovieFromFavourites(movie);
 };
 

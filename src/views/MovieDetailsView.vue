@@ -7,7 +7,11 @@
     </div>
     <div v-else>
       <div v-if="movieToDetail">
-        <MovieDetails :movieData="movieToDetail"/>
+        <MovieDetails
+          :movieData="movieToDetail"
+          :onAddMovieToFavouritesClick="onAddMovieToFavouritesClick"
+          :onRemoveMovieFromFavouritesClick="onRemoveMovieFromFavouritesClick"
+        />
       </div>
       <div v-else>
         <p class="warning">Movie not found</p>
@@ -17,21 +21,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useMovieStore } from '@/stores/movieStore';
+import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import MovieDetails from '../components/MovieDetails.vue';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute();
 const movieId = route.params.id;
-console.info('MovieView movieId:', movieId);
-
 const movieStore = useMovieStore();
-// const movie = movieStore.getMovieByID('tt0462499');
-const movie = movieStore.omdbQueryMovieById(movieId);
-const {movieToDetail, isQuerying} = storeToRefs(movieStore);
-console.info('MovieView movie:', movie);
+
+const movie = movieStore.omdbQueryMovieById(movieId as string);
+const {movieToDetail, isQuerying, favouriteMovies} = storeToRefs(movieStore);
+// const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === movieId);
+// if (isFavourited) {
+//   movieToDetail.isFavourite = true;
+// }
+
+const onAddMovieToFavouritesClick = (movie: MovieListItem) => {
+  movieStore.addMovieToFavourites(movie);
+};
+const onRemoveMovieFromFavouritesClick = (movie: MovieListItem) => {
+  movieStore.removeMovieFromFavourites(movie);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -41,9 +52,6 @@ console.info('MovieView movie:', movie);
     .text {
       display: inline-flex;
       animation: growAndShrink 2.5s ease-in-out infinite;
-      //text-align: center;
-      //transform: scale(2.5) translateY(50px) translateX(50px);
-      //transition: transform 0.5s;
     }
   }
 }

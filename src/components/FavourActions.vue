@@ -15,22 +15,20 @@
 <script setup lang="ts">
 
 
-import { MovieListItem } from '@/stores/movieStore';
+import {type MovieListItem } from '@/stores/movieStore';
 
 const props = defineProps<{
   movie: MovieListItem;
   onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
-const { movie} = props;
+const {movie} = props;
 const onAddToFavouritesButtonClick = () => {
-  console.info('FavourActions onAddToFavouritesButtonClick:', movie, '\nprops:', props);
   if (props.onAddMovieToFavouritesClick) {
     props.onAddMovieToFavouritesClick(movie);
   }
 };
 const onRemoveFromFavouritesButtonClick = () => {
-  console.info('FavourActions onAddToFavouritesButtonClick:', movie, '\nprops:', props);
   if (props.onRemoveMovieFromFavouritesClick) {
     props.onRemoveMovieFromFavouritesClick(movie);
   }
@@ -80,6 +78,7 @@ $componentDimensionsForSmallerScreen: 80px;
     height: 100%;
     border-radius: calc($componentDimensions / 2);
     font-size: 1.5em;
+    font-weight: bold;
     justify-content: center;
     align-items: center;
 

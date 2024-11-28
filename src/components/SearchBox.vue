@@ -11,7 +11,7 @@
 
 </template>
 <script setup lang="ts">
-import { ref, Ref ,onMounted} from 'vue';
+import { ref, onMounted} from 'vue';
 
 const props = defineProps<{
   onInputSearch: (searchQuery: string) => void,

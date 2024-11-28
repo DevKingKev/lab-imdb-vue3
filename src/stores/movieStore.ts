@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
@@ -6,7 +6,7 @@ export type MovieListItemType = 'movie' | 'series' | 'episode' | 'game';
 
 export interface MovieListItem {
   Title: string;
-  Year: number;
+  Year: string;
   imdbID: string;
   Type: MovieListItemType;
   Poster: string;
@@ -45,6 +45,7 @@ export interface MovieDetails {
   Production: string;
   Website: string;
   Response: string;
+  isFavourite?: boolean;
 }
 
 interface SearchStatus {
@@ -59,8 +60,6 @@ const omdbAPIKey = '30ba7fc1';
 export const useMovieStore = defineStore('movies', () => {
 
   const searchData = ref<MovieListItem[]>([]);
-  // const favouriteMoviesData = ref<MovieListItem[]>([]);
-  const storedFavourites = localStorage.getItem('favouriteMovies');
 
 
   const searchText = ref('');
@@ -70,36 +69,14 @@ export const useMovieStore = defineStore('movies', () => {
   const movieToDetail = ref<MovieDetails | undefined>(undefined);
 
   const favouriteMovies = ref<MovieListItem[]>([]);
+  populateFavouriteMoviesList();
 
 
-  if (storedFavourites) {
-    favouriteMovies.value =  Array.from(JSON.parse(storedFavourites)).sort((a, b) => a.Year.localeCompare(b.Year));
-  } else {
-    localStorage.setItem('favouriteMovies', JSON.stringify([]));
-  }
-  console.info('movieStore storedFavourites:', storedFavourites,
-    '\nfavouriteMovies:', favouriteMovies.value);
-  const searchStatus: SearchStatus = ref({
+  const searchStatus= ref<SearchStatus >({
     searchedForMovie: false,
     queryCompleted: false,
     queryReturnedEmpty: false,
   });
-  // favouriteMoviesData.value = [
-  //   {
-  //     'Title': 'Rambo',
-  //     'Year': '2008',
-  //     'imdbID': 'tt0462499',
-  //     'Type': 'movie',
-  //     'Poster': 'https://m.media-amazon.com/images/M/MV5BMTI5Mjg1MzM4NF5BMl5BanBnXkFtZTcwNTAyNzUzMw@@._V1_SX300.jpg',
-  //   },
-  //   {
-  //     'Title': 'Rambo: First Blood Part II',
-  //     'Year': '1985',
-  //     'imdbID': 'tt0089880',
-  //     'Type': 'movie',
-  //     'Poster': 'https://m.media-amazon.com/images/M/MV5BNTNiMzUyZjQtY2RlOS00MjIxLWFlMjAtNjI1NjkzY2JjN2M3XkEyXkFqcGc@._V1_SX300.jpg',
-  //   }];
-
 
   function filterForMovies(data: MovieListItem[]): MovieListItem[] {
     return data.filter((movie) => movie.Type === 'movie');
@@ -109,33 +86,16 @@ export const useMovieStore = defineStore('movies', () => {
     return filterForMovies(searchData.value);
   }
 
-  // function ensureUniqueList(data: MovieListItem[]): MovieListItem[] {
-  //   const uniqueList = Array.from(new Set(favouriteMovies.value.map(m => m.imdbID)))
-  //     .map(id => favouriteMovies.value.find(m => m.imdbID === id));
-  //   return uniqueList;
-  // }
 
-  function getFavouriteMovies() {
-    return favouriteMovies;
-  }
 
   function getFavouriteMovieIDs(): string[] {
     return favouriteMovies.value.map((movie) => movie.imdbID);
   }
 
-  // function getMovieByID(id: string): MovieDetails | undefined {
-  //   const found = searchData.value.find((movie) => movie.imdbID === id);
-  //   if (found) {
-  //     return mockMovie;
-  //   } else {
-  //     return undefined;
-  //   }
-  // }
-
   const omdbQuery = async (searchText: string) => {
     try {
       const response = await axios.get(`${omdpAPIURL}?apikey=${omdbAPIKey}&s=${searchText}`);
-      console.info('movieStore omdbQuery response:', response);
+
       isQuerying.value = false;
       if (response.data.Response === 'True') {
         if (response.data?.Search) {
@@ -151,36 +111,38 @@ export const useMovieStore = defineStore('movies', () => {
           });
 
           movies.value = getMovies();
-          console.info('movieStore searchData:', searchData.value, 'movies:', movies.value);
         }
       } else {
-        throw new Error(response.data.Error);
+        throw new Error(response.data.Response);
       }
-    } catch (error) {
-
-      // console.error( 'Error fetching data:', error );
-      apiErrors.value.push(error);
+    } catch (error:any) {
+      apiErrors.value.push(error.toString());
     }
   };
 
-  const omdbQueryMovieById = async (imdbID: string): Promise<MovieDetails> => {
+  const omdbQueryMovieById = async (imdbID: string) => {
     movieToDetail.value = undefined;
     try {
       isQuerying.value = true;
       const response = await axios.get(`${omdpAPIURL}?apikey=${omdbAPIKey}&i=${imdbID}`);
-      console.info('movieStore omdbQueryMovieById response:', response);
+
       isQuerying.value = false;
       if (response.data.Response === 'True') {
-        movieToDetail.value = response.data;
-        console.info('movieStore omdbQueryMovieById: \nresponse.data', response.data, 'movieToDetail.value:', movieToDetail.value);
+
+        const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === imdbID);
+        if (isFavourited) {
+          movieToDetail.value = {...response.data, isFavourite: isFavourited};
+        } else {
+          movieToDetail.value = {...response.data};
+        }
+
         return response.data;
       } else {
         throw new Error(response.data.Error);
       }
-    } catch (error) {
+    } catch (error:any) {
 
-      console.error('Error fetching data:', error);
-      apiErrors.value.push(error);
+      apiErrors.value.push(error.toString());
     }
   };
 
@@ -194,7 +156,7 @@ export const useMovieStore = defineStore('movies', () => {
 
   function updateSearchText(text: string) {
     searchText.value = text;
-    console.info('movieStore searchText:', searchText.value);
+
     if (text.length > 2) {
       isQuerying.value = true;
       omdbQuery(text);
@@ -210,49 +172,57 @@ export const useMovieStore = defineStore('movies', () => {
   }
 
   function addMovieToFavourites(movie: MovieListItem) {
-    console.info('movieStore removeMovieFromFavourites before addition:',
-      '\nfavouriteMovies.value:', favouriteMovies.value,
-      '\nmovie:', movie);
     const found = favouriteMovies.value.find((m) => m.imdbID === movie.imdbID);
     movie.isFavourite = true;
+
+    updateMovieReferencesForFavourite(movie, true);
     if (!found) {
       favouriteMovies.value.push(movie);
     }
-    favouriteMovies.values = favouriteMovies.value.sort((a, b) => a.Year.localeCompare(b.Year));
+    favouriteMovies.value = favouriteMovies.value.sort((a, b) => a.Year.localeCompare(b.Year));
 
     localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
-    console.info('movieStore removeMovieFromFavourites after addition:',
-      '\nfavouriteMovies.value:', favouriteMovies.value,
-      '\nmovie:', movie);
+
   }
 
   function removeMovieFromFavourites(movie: MovieListItem) {
-    console.info('movieStore removeMovieFromFavourites before Removal:',
-      '\nfavouriteMovies.value:', favouriteMovies.value,
-      '\nmovie:', movie,
-      '\n movie.isFavourite:',  movie.isFavourite);
+
     movie.isFavourite = false;
+
     const index = favouriteMovies.value.findIndex((m) => m.imdbID === movie.imdbID);
+
     if (index > -1) {
-      console.info('index is greater than < 1:', index);
       favouriteMovies.value.splice(index, 1);
     }
-    // favouriteMovies.values = favouriteMovies.value;
+    updateMovieReferencesForFavourite(movie, false);
 
     localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
 
-    console.info('movieStore removeMovieFromFavourites after Removal:',
-      '\nfavouriteMovies.value:', favouriteMovies.value,
-      '\nmovie:', movie);
   }
 
-  watch([movies, favouriteMovies], (mutation: any, state: any, some: any) => {
-    console.info('movieStore -> watch->count:',
-      '\nmovies: ', movies,
-      '\nmutation: ', mutation,
-      '\nstate:', state,
-      '\nsome:', some);
-  });
+  function populateFavouriteMoviesList() {
+
+    const storedFavourites = localStorage.getItem('favouriteMovies');
+    if (storedFavourites) {
+      favouriteMovies.value = Array.from(JSON.parse(storedFavourites)as MovieListItem[]).sort((a:MovieListItem, b:MovieListItem) => a.Year.localeCompare(b.Year)) ;
+    } else {
+      localStorage.setItem('favouriteMovies', JSON.stringify([]));
+    }
+
+  }
+
+  function updateMovieReferencesForFavourite(movie: MovieListItem, value: boolean) {
+    if (movieToDetail && movieToDetail.value && movieToDetail.value.imdbID === movie.imdbID) {
+      movieToDetail.value.isFavourite = value;
+    }
+    if (movies.value) {
+
+      const found = movies.value.find((m) => m.imdbID === movie.imdbID);
+      if (found) {
+        found.isFavourite = value;
+      }
+    }
+  }
 
 
   return {
@@ -262,8 +232,6 @@ export const useMovieStore = defineStore('movies', () => {
     movieToDetail,
     favouriteMovies,
     isQuerying,
-    // getMovieByID,
-    getFavouriteMovies,
     addMovieToFavourites,
     removeMovieFromFavourites,
     omdbQueryMovieById,
