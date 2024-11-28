@@ -76,7 +76,5 @@ button:hover {
 
     #app {
         display: grid;
-        /*grid-template-columns: 1fr;*/
-
     }
 }

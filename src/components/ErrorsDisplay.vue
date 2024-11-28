@@ -9,9 +9,6 @@
 
 </template>
 <script setup lang="ts">
-
-
-
 const props = defineProps<{
   errors: string[];
 }>();

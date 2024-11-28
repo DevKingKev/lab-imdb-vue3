@@ -48,7 +48,7 @@ export interface MovieDetails {
   isFavourite?: boolean;
 }
 
-interface SearchStatus {
+export interface SearchStatus {
   searchedForMovie: boolean;
   queryCompleted: boolean;
   queryReturnedEmpty: boolean;
@@ -58,21 +58,17 @@ const omdpAPIURL = 'http://www.omdbapi.com/';
 const omdbAPIKey = '30ba7fc1';
 
 export const useMovieStore = defineStore('movies', () => {
-
   const searchData = ref<MovieListItem[]>([]);
-
 
   const searchText = ref('');
   const apiErrors = ref<string[]>([]);
   const movies = ref(getMovies());
   const isQuerying = ref(false);
   const movieToDetail = ref<MovieDetails | undefined>(undefined);
-
   const favouriteMovies = ref<MovieListItem[]>([]);
   populateFavouriteMoviesList();
 
-
-  const searchStatus= ref<SearchStatus >({
+  const searchStatus = ref<SearchStatus>({
     searchedForMovie: false,
     queryCompleted: false,
     queryReturnedEmpty: false,
@@ -85,8 +81,6 @@ export const useMovieStore = defineStore('movies', () => {
   function getMovies() {
     return filterForMovies(searchData.value);
   }
-
-
 
   function getFavouriteMovieIDs(): string[] {
     return favouriteMovies.value.map((movie) => movie.imdbID);
@@ -117,9 +111,9 @@ export const useMovieStore = defineStore('movies', () => {
       } else {
         throw new Error(response.data.Error);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('movieStore -> omdbQuery :', error.toString());
-      const errorMessage = `Failed in fetching list of movies, ${error.toString()}. Try again later!`
+      const errorMessage = `Failed in fetching list of movies, ${error.toString()}. Try again later!`;
       apiErrors.value.push(errorMessage);
     }
   };
@@ -132,7 +126,7 @@ export const useMovieStore = defineStore('movies', () => {
 
       isQuerying.value = false;
       if (response.data.Response === 'True') {
-           apiErrors.value = [];
+        apiErrors.value = [];
         const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === imdbID);
         if (isFavourited) {
           movieToDetail.value = {...response.data, isFavourite: isFavourited};
@@ -144,16 +138,12 @@ export const useMovieStore = defineStore('movies', () => {
       } else {
         throw new Error(response.data.Error);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('movieStore -> omdbQueryMovieById :', error.toString());
-      const errorMessage = `Failed to fetch movie, ${error.toString()}.  Check if the movie exists and try again later!`
+      const errorMessage = `Failed to fetch movie, ${error.toString()}.  Check if the movie exists and try again later!`;
       apiErrors.value.push(errorMessage);
     }
   };
-
-  function isFavouriteMovie(id: string): boolean {
-    return getFavouriteMovieIDs().includes(id);
-  }
 
   function getSearchText() {
     return searchText.value;
@@ -191,9 +181,7 @@ export const useMovieStore = defineStore('movies', () => {
   }
 
   function removeMovieFromFavourites(movie: MovieListItem) {
-
     movie.isFavourite = false;
-
     const index = favouriteMovies.value.findIndex((m) => m.imdbID === movie.imdbID);
 
     if (index > -1) {
@@ -202,14 +190,12 @@ export const useMovieStore = defineStore('movies', () => {
     updateMovieReferencesForFavourite(movie, false);
 
     localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies.value));
-
   }
 
   function populateFavouriteMoviesList() {
-
     const storedFavourites = localStorage.getItem('favouriteMovies');
     if (storedFavourites) {
-      favouriteMovies.value = Array.from(JSON.parse(storedFavourites)as MovieListItem[]).sort((a:MovieListItem, b:MovieListItem) => a.Year.localeCompare(b.Year)) ;
+      favouriteMovies.value = Array.from(JSON.parse(storedFavourites) as MovieListItem[]).sort((a: MovieListItem, b: MovieListItem) => a.Year.localeCompare(b.Year));
     } else {
       localStorage.setItem('favouriteMovies', JSON.stringify([]));
     }
@@ -220,15 +206,14 @@ export const useMovieStore = defineStore('movies', () => {
     if (movieToDetail && movieToDetail.value && movieToDetail.value.imdbID === movie.imdbID) {
       movieToDetail.value.isFavourite = value;
     }
-    if (movies.value) {
 
+    if (movies.value) {
       const found = movies.value.find((m) => m.imdbID === movie.imdbID);
       if (found) {
         found.isFavourite = value;
       }
     }
   }
-
 
   return {
     searchData,

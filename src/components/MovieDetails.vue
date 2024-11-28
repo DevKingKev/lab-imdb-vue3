@@ -42,9 +42,7 @@ const props = defineProps<{
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
 const {movieData} = props;
-
 const isFavourited = true;
-
 const movieListItem = ref({
   Title: movieData.Title,
   Year: movieData.Year,
@@ -70,8 +68,6 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
   .data-display {
     flex-direction: row;
   }
-
-
 
   .movie-info {
     flex-grow: 1;

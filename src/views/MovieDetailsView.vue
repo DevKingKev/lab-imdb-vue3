@@ -37,10 +37,6 @@ const movieStore = useMovieStore();
 
 const movie = movieStore.omdbQueryMovieById(movieId as string);
 const {movieToDetail, isQuerying, apiErrors} = storeToRefs(movieStore);
-// const isFavourited = favouriteMovies.value.some((movie) => movie.imdbID === movieId);
-// if (isFavourited) {
-//   movieToDetail.isFavourite = true;
-// }
 
 const onAddMovieToFavouritesClick = (movie: MovieListItem) => {
   movieStore.addMovieToFavourites(movie);

@@ -58,7 +58,6 @@ const onFormSubmit = () => {
     line-height: 3em;
     margin-right: 10px;
     padding: 1px 10px;
-
   }
 
   button {
@@ -70,8 +69,8 @@ const onFormSubmit = () => {
     form {
       flex-direction: column;
       max-width: 100%;
-
     }
+
     input {
       width: 100%;
       margin-bottom: 10px;

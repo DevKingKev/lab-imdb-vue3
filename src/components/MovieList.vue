@@ -36,7 +36,6 @@ const listHeaderText = computed(() => {
   return props.listType === 'SearchList' ? 'Search results' : 'Favourite movies';
 });
 
-// props listHeader, list
 </script>
 <style lang="scss" scoped>
 .movie-list {
@@ -51,7 +50,6 @@ const listHeaderText = computed(() => {
   }
 
   @media (max-width: 800px) {
-
 
   }
 

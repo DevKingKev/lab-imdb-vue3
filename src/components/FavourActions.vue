@@ -7,7 +7,7 @@
     <div class="button remove" title="Remove from favourites"
          v-if="movie.isFavourite"
     >
-      <button v-on:click="onRemoveFromFavouritesButtonClick"  class="remove">-</button>
+      <button v-on:click="onRemoveFromFavouritesButtonClick" class="remove">-</button>
     </div>
   </div>
 
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 
 
-import {type MovieListItem } from '@/stores/movieStore';
+import { type MovieListItem } from '@/stores/movieStore';
 
 const props = defineProps<{
   movie: MovieListItem;
@@ -54,11 +54,9 @@ $componentDimensionsForSmallerScreen: 80px;
   border-radius: calc($componentDimensions / 2);
   justify-content: center;
 
-
   &:hover {
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(100, 238, 79, 0.3);
-
   }
 
   &:active {
@@ -69,7 +67,6 @@ $componentDimensionsForSmallerScreen: 80px;
     justify-content: center;
     font-weight: bold;
     width: 100%;
-
   }
 
   button {
@@ -83,32 +80,23 @@ $componentDimensionsForSmallerScreen: 80px;
     align-items: center;
 
     &.add {
-
-        background: #639163;
-
+      background: #639163;
     }
 
     &.remove {
-
-        background: #c54a2e;
-
+      background: #c54a2e;
     }
   }
 
   @media (max-width: 800px) {
-
     width: $componentDimensionsForSmallerScreen;
     height: $componentDimensionsForSmallerScreen;
     border-radius: calc($componentDimensionsForSmallerScreen / 2);
 
-
-    button{
+    button {
       border-radius: calc($componentDimensionsForSmallerScreen / 2);
-
     }
 
   }
-
 }
-
 </style>

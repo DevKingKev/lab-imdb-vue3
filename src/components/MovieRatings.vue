@@ -15,7 +15,6 @@ const props = defineProps<{
 }>();
 const {movieRatings} = props;
 
-
 </script>
 <style lang="scss" scoped>
 .movie-ratings {
@@ -31,7 +30,6 @@ const {movieRatings} = props;
     margin-right: 10px;
     font-style: italic;
   }
-
 
   .movie-attribute {
     display: flex;

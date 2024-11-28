@@ -73,7 +73,6 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
   &:hover {
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(100, 238, 79, 0.3);
-
   }
 
   .poster {

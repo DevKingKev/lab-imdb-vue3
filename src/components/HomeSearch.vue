@@ -41,7 +41,6 @@ import ErrorsDisplay from './ErrorsDisplay.vue';
 const movieStore = useMovieStore();
 const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors} = storeToRefs(movieStore);
 
-
 const searchText = movieStore.getSearchText();
 
 const onSearchBoxSubmit = (searchQuery: string) => {

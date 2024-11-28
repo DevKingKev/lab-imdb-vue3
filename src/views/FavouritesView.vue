@@ -12,8 +12,6 @@
 import { storeToRefs } from 'pinia';
 import { useMovieStore } from '@/stores/movieStore';
 import { type MovieListItem } from '@/stores/movieStore';
-
-
 import MovieList from '../components/MovieList.vue';
 
 const movieStore = useMovieStore();
