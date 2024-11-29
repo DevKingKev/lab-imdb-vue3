@@ -1,6 +1,6 @@
 <template>
   <div class="movie-list">
-    <h2>{{ listHeaderText }} <span class="count">({{movieList.length}})</span></h2>
+    <h2>{{ listHeaderText }} <span class="count">({{ movieList.length }})</span></h2>
     <div class="results-list">
       <MovieCard v-for="movieItem in movieList"
                  :key="movieItem.imdbID"
@@ -51,6 +51,11 @@ const listHeaderText = computed(() => {
 
   @media (max-width: 800px) {
 
+  }
+  @media (max-width: 400px) {
+    .results-list {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
   }
 
 }

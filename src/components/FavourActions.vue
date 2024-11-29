@@ -39,6 +39,7 @@ const onRemoveFromFavouritesButtonClick = () => {
 <style lang="scss" scoped>
 $componentDimensions: 50px;
 $componentDimensionsForSmallerScreen: 80px;
+
 .favour-actions {
   position: absolute;
   bottom: 0;
@@ -97,6 +98,16 @@ $componentDimensionsForSmallerScreen: 80px;
       border-radius: calc($componentDimensionsForSmallerScreen / 2);
     }
 
+  }
+
+  @media (max-width: 400px) {
+    width: $componentDimensions;
+    height: $componentDimensions;
+    border-radius: calc($componentDimensions / 2);
+
+    button {
+      border-radius: calc($componentDimensions / 2);
+    }
   }
 }
 </style>

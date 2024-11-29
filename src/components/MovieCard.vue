@@ -22,7 +22,7 @@
 import { computed } from 'vue'    ;
 
 import FavorActions from './FavourActions.vue';
-import {type  MovieListItem } from '@/stores/movieStore';
+import { type  MovieListItem } from '@/stores/movieStore';
 
 interface IMovieCardProps {
   movie: MovieListItem;
@@ -95,7 +95,14 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
   }
 
   @media (max-width: 800px) {
+    padding: 10px 0;
+    .favour-actions {
+      bottom: -10px;
+    }
+  }
 
+  @media (max-width: 400px) {
+    margin: 20px 0;
   }
 }
 </style>

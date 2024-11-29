@@ -95,4 +95,16 @@ main {
     margin-top: 1rem;
   }
 }
+
+@media (max-width: 400px) {
+
+  header {
+    padding-right: 0;
+
+    .logo {
+      margin-right: 1rem;
+    }
+  }
+
+}
 </style>

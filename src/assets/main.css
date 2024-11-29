@@ -7,7 +7,6 @@
     height: 100vh;
     max-width: 1920px;
     margin: 0 auto;
-    padding: 2rem;
     font-weight: normal;
     overflow-y: hidden;
 }
@@ -76,5 +75,6 @@ button:hover {
 
     #app {
         display: grid;
+        padding: 2rem;
     }
 }
