@@ -1,10 +1,12 @@
 # lab-imdb-vue
+
 This template should help get you started developing with Vue 3 in Vite.
-            
+
 # Assumptions and explanations
+
 The project was scaffolded using vite create with pnpm as package manager. I have found that pnpm is quite fast and has good caching.
 
-It uses TypesScript and Pinia for state management. I decided to bring in Axios for API calls as I have used it before and it seems to be very popular even among Vue specialists. 
+It uses TypesScript and Pinia for state management. It also uses Axios for API calls as it seems to be a popular choice with some added functionality.
 
 The scaffolded project includes testing, but I did not write any tests. All default Vue files that were superfluous were removed save for HelloWorld as it is used in the HellwWorld.spec.ts file, which I might in a future occasion decide to use for test purposes.
 
@@ -25,7 +27,6 @@ As for the development environment, it should work on any computer which support
 The application has been tested on Brave, Chrome and Firefox and found to be working satisfactorily - as intended - in all these browsers.
 
 The error handling is rudimentary and the messages could certainly be more specific, but they keep the user informed at least.
-
 
 ## Recommended IDE Setup
 

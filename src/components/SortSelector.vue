@@ -4,7 +4,6 @@
     <select id="sort-select" v-model="selectedSort" @change="onSortChange">
       <option value="Year">Year</option>
       <option value="Title">Title</option>
-      <option value="Type">Type</option>
     </select>
   </div>
 </template>
@@ -35,6 +34,7 @@ const onSortChange = () => {
   display: flex;
   align-items: center;
   gap: 10px;
+ width: 100px;
   margin-left: auto;
 
   label {
@@ -43,6 +43,7 @@ const onSortChange = () => {
   }
 
   select {
+    width: 100%;
     padding: 5px 10px;
     border: 1px solid var(--color-border);
     border-radius: 5px;
