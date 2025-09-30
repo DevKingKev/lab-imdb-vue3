@@ -68,6 +68,7 @@ export const useMovieStore = defineStore( 'movies', () => {
   const movieToDetail = ref<MovieDetails | undefined>( undefined );
   const favouriteMovies = ref<MovieListItem[]>( [] );
   populateFavouriteMoviesList();
+  populateSearchesList();
 
   const searchStatus = ref<SearchStatus>( {
     searchedForMovie: false,
@@ -109,9 +110,9 @@ export const useMovieStore = defineStore( 'movies', () => {
         const errorMessage = `Movie not found. Make sure you have the right spelling!`;
         apiErrors.value.push( errorMessage );
       }
-    } catch ( error: any ) {
-      console.error( 'movieStore -> omdbQuery :', error.toString() );
-      const errorMessage = `Failed in fetching list of movies, "${error.toString()}". Try again later!`;
+    } catch ( error: unknown ) {
+      console.error( 'movieStore -> omdbQuery :', String( error ) );
+      const errorMessage = `Failed in fetching list of movies, "${String( error )}". Try again later!`;
       apiErrors.value.push( errorMessage );
     }
   };
@@ -137,9 +138,9 @@ export const useMovieStore = defineStore( 'movies', () => {
         const errorMessage = `Movie not found. Make sure you have the right imdb id for the movie!`;
         apiErrors.value.push( errorMessage );
       }
-    } catch ( error: any ) {
-      console.error( 'movieStore -> omdbQueryMovieById :', error.toString() );
-      const errorMessage = `Failed to fetch movie, "${error.toString()}".  Check if the movie exists and try again later!`;
+    } catch ( error: unknown ) {
+      console.error( 'movieStore -> omdbQueryMovieById :', String( error ) );
+      const errorMessage = `Failed to fetch movie, "${String( error )}".  Check if the movie exists and try again later!`;
       apiErrors.value.push( errorMessage );
     }
   };
@@ -174,6 +175,9 @@ export const useMovieStore = defineStore( 'movies', () => {
 
     // Add the search term to the front of the array
     searches.value.unshift( searchTerm );
+
+    // Save updated searches to localStorage
+    localStorage.setItem( 'searches', JSON.stringify( searches.value ) );
   }
 
   function resetSearchData () {
@@ -212,6 +216,15 @@ export const useMovieStore = defineStore( 'movies', () => {
       favouriteMovies.value = Array.from( JSON.parse( storedFavourites ) as MovieListItem[] ).sort( ( a: MovieListItem, b: MovieListItem ) => a.Year.localeCompare( b.Year ) );
     } else {
       localStorage.setItem( 'favouriteMovies', JSON.stringify( [] ) );
+    }
+  }
+
+  function populateSearchesList () {
+    const storedSearches = localStorage.getItem( 'searches' );
+    if ( storedSearches ) {
+      searches.value = JSON.parse( storedSearches ) as string[];
+    } else {
+      localStorage.setItem( 'searches', JSON.stringify( [] ) );
     }
   }
 
