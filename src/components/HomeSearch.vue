@@ -2,7 +2,7 @@
   <div class="home-search">
     <h1>Movie Search</h1>
     <SearchBox :onInputSearch="onSearchBoxSubmit"
-               :searchText="searchText"
+               :searchText="searchText()"
                :isQuerying="isQuerying"/>
     <div v-if="!searchStatus.searchedForMovie">
       <p>Search for a movie</p>
@@ -61,7 +61,7 @@ import ErrorsDisplay from './ErrorsDisplay.vue';
 const movieStore = useMovieStore();
 const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors, searches} = storeToRefs(movieStore);
 
-const searchText = movieStore.getSearchText();
+const searchText = movieStore.getSearchText;
 
 const onSearchBoxSubmit = (searchQuery: string) => {
   searchStatus.value.searchedForMovie = true;
@@ -79,10 +79,8 @@ const onRemoveMovieFromFavourites = (movie: MovieListItem) => {
 };
 
 const onSearchTagClick = (searchTerm: string) => {
-  const currentSearchText = movieStore.getSearchText();
-
   // Only perform search if the clicked term is different from current search
-  if (currentSearchText !== searchTerm) {
+  if (searchText() !== searchTerm) {
     searchStatus.value.searchedForMovie = true;
     movieStore.updateSearchText(searchTerm);
   }

@@ -11,15 +11,20 @@
 
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 const props = defineProps<{
   onInputSearch: (searchQuery: string) => void,
   searchText: string,
   isQuerying?: boolean
 }>();
-const {searchText} = props;
-const searchQuery = (searchText) ? ref(searchText) : ref('');
+
+const searchQuery = ref(props.searchText || '');
+
+// Watch for changes in searchText prop and update searchQuery
+watch(() => props.searchText, (newSearchText) => {
+  searchQuery.value = newSearchText || '';
+});
 const searchTextInput = ref<HTMLInputElement | null>(null);
 
 const searchButtonText = computed(() => {
