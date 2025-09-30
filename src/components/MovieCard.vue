@@ -2,7 +2,21 @@
   <div class="movie-card" :key="movie.imdbID">
     <router-link :to="{ name: 'movie', params: { id: movie.imdbID } }">
       <div class="data-display">
-        <div class="poster"><img :src="movieImageSrc" :alt="moviePosterAltText"/></div>
+        <div class="poster">
+          <img
+            v-if="!showEmojiPlaceholder"
+            :src="movieImageSrc"
+            :alt="moviePosterAltText"
+            @error="onImageError"
+          />
+          <div
+            v-else
+            class="emoji-placeholder"
+            :title="moviePosterAltText"
+          >
+            🎬
+          </div>
+        </div>
         <div class="movie-info">
           <h3>{{ movie.Title }}</h3>
           <p class="movie-details">
@@ -21,10 +35,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'    ;
+import { computed } from 'vue';
 
 import FavorActions from './FavourActions.vue';
 import { type  MovieListItem } from '@/stores/movieStore';
+import { useImageError } from '@/util/globalUtils';
 
 interface IMovieCardProps {
   movie: MovieListItem;
@@ -32,14 +47,23 @@ interface IMovieCardProps {
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }
 
-
 const props = defineProps<IMovieCardProps>();
 
 const {movie} = props;
 
-const movieImageSrc = computed(() => {
-  return movie.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movie.Poster;
-});
+// Use the image error handling utility
+const { 
+  imageSrc: movieImageSrc, 
+  showEmojiPlaceholder, 
+  onImageError 
+} = useImageError(
+  () => movie.Poster,
+  { 
+    fallbackUrl: 'https://via.placeholder.com/300x450/cccccc/666666?text=No+Poster',
+    showEmojiOnFinalFallback: true 
+  }
+);
+
 const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
 
 </script>
@@ -85,6 +109,25 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+
+    .emoji-placeholder {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4em;
+      background-color: var(--color-background-soft);
+      border: 2px dashed var(--color-border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--color-border);
+        transform: scale(1.05);
+      }
     }
   }
 

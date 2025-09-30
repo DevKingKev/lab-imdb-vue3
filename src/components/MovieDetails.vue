@@ -1,7 +1,21 @@
 <template>
   <div class="movie-details">
     <div class="data-display">
-      <div class="poster"><img :src="movieImageSrc" :alt="movieAltText"/></div>
+      <div class="poster">
+        <img
+          v-if="!showEmojiPlaceholder"
+          :src="movieImageSrc"
+          :alt="movieAltText"
+          @error="onImageError"
+        />
+        <div
+          v-else
+          class="emoji-placeholder"
+          :title="movieAltText"
+        >
+          🎬
+        </div>
+      </div>
       <div class="movie-info">
         <h3>{{ movieData.Title }}</h3>
         <div class="movie-details">
@@ -44,17 +58,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed,ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import FavorActions from './FavourActions.vue';
 import MovieRatings from './MovieRatings.vue';
-import {type MovieDetails, type MovieListItem } from '@/stores/movieStore';
+import { type MovieDetails, type MovieListItem } from '@/stores/movieStore';
+import { useImageError } from '@/util/globalUtils';
 
 const props = defineProps<{
   movieData: MovieDetails,
   onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
+
 const {movieData} = props;
 const isFavourited = true;
 const movieListItem = ref({
@@ -66,9 +82,19 @@ const movieListItem = ref({
   isFavourite: movieData.isFavourite
 });
 
-const movieImageSrc = computed(() => {
-  return movieData.Poster === 'N/A' ? 'https://via.placeholder.com/150' : movieData.Poster;
-});
+// Use the image error handling utility
+const {
+  imageSrc: movieImageSrc,
+  showEmojiPlaceholder,
+  onImageError
+} = useImageError(
+  () => movieData.Poster,
+  {
+    fallbackUrl: 'https://via.placeholder.com/400x600/cccccc/666666?text=No+Poster',
+    showEmojiOnFinalFallback: true
+  }
+);
+
 const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
 
 </script>
@@ -115,6 +141,25 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
         transform: scale(1.5) translateY(40px) translateX(50px);
         transition: transform 0.5s ;
         z-index: 2;
+      }
+    }
+
+    .emoji-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6em;
+      background-color: var(--color-background-soft);
+      border: 2px dashed var(--color-border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--color-border);
+        transform: scale(1.05);
       }
     }
   }
