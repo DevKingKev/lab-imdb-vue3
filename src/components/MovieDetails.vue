@@ -5,17 +5,31 @@
       <div class="movie-info">
         <h3>{{ movieData.Title }}</h3>
         <div class="movie-details">
-          <div class="movie-attribute movie-year"><span class="data-key">Year:</span> <span
-            class="data-value">{{ movieData.Year }}</span></div>
-          <div class="movie-attribute movie-genre"><span class="data-key">Genre:</span> <span
-            class="data-value">{{ movieData.Genre }}</span></div>
-          <div class="movie-attribute movie-year"><span class="data-key">Director:</span> <span
-            class="data-value">{{ movieData.Director }}</span></div>
-          <div class="movie-attribute movie-year column"><span class="data-key">Actors:</span>
-            <p class="data-value">{{ movieData.Actors }}</p></div>
-          <div class="movie-attribute movie-plot column"><span class="data-key">Plot:</span>
-            <p class="data-value">{{ movieData.Plot }}</p></div>
-          <div class="movie-attribute movie-ratings column"><span class="data-key">Ratings:</span>
+          <div class="movie-attribute movie-type ">
+            <span  class="data-value movie-type-tag">{{ movieData.Type }}</span>
+          </div>
+          <div class="movie-attribute movie-year">
+            <span class="data-key">Year:</span> <span
+            class="data-value">{{ movieData.Year }}</span>
+          </div>
+          <div class="movie-attribute movie-genre">
+            <span class="data-key">Genre:</span> <span
+            class="data-value">{{ movieData.Genre }}</span>
+          </div>
+          <div class="movie-attribute movie-director">
+            <span class="data-key">Director:</span> <span
+            class="data-value">{{ movieData.Director }}</span>
+          </div>
+          <div class="movie-attribute movie-actors column">
+            <span class="data-key">Actors:</span>
+            <p class="data-value">{{ movieData.Actors }}</p>
+          </div>
+          <div class="movie-attribute movie-plot column">
+            <span class="data-key">Plot:</span>
+            <p class="data-value">{{ movieData.Plot }}</p>
+          </div>
+          <div class="movie-attribute movie-ratings column">
+            <span class="data-key">Ratings:</span>
             <MovieRatings :movieRatings="movieData.Ratings"/>
           </div>
         </div>
@@ -58,7 +72,7 @@ const movieImageSrc = computed(() => {
 const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .movie-details {
   position: relative;
   display: flex;
@@ -105,11 +119,22 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
     }
   }
 
+  $favourActionDimensions: 100px;
   .favour-actions {
+    position: relative;
+    left: calc(50% - ($favourActionDimensions / 2));
     z-index: 10;
+    width: $favourActionDimensions;
+    height: $favourActionDimensions;
     font-size: 2em;
     line-height: 2em;
     padding: 0;
+
+   .button{
+     button{
+      border-radius: 50px ;
+      font-size: 2.5em;
+    }}
   }
 
   @media (max-width: 800px) {

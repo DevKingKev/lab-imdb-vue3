@@ -7,6 +7,9 @@
           <h3>{{ movie.Title }}</h3>
           <p class="movie-details">
             <span class="release-year">{{ movie.Year }}</span>
+           </p>
+          <p class="movie-details">
+             <span class="movie-type-tag">{{ movie.Type }}</span>
           </p>
         </div>
       </div>
@@ -15,7 +18,6 @@
       :movie="movie"
       :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
       :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"/>
-
   </div>
 </template>
 <script setup lang="ts">
@@ -75,8 +77,7 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
   }
 
   .poster {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 180px;
     min-width: 100px;
     margin-right: 20px;
 
@@ -85,6 +86,18 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       height: 100%;
       object-fit: contain;
     }
+  }
+
+  .movie-type-tag {
+    display: inline-block;
+    background-color: var(--color-border);
+    color: var(--color-text);
+    padding: 4px 8px;
+    margin: 5px 0;
+    border-radius: 12px;
+    font-size: 0.8em;
+    text-transform: capitalize;
+    border: 1px solid var(--color-border-hover);
   }
 
   .favour-actions {

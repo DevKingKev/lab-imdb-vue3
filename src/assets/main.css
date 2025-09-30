@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
     display: grid;
@@ -19,7 +19,8 @@ a,
     padding: 3px;
 }
 
-div, section {
+div,
+section {
     display: flex;
     flex-direction: column;
     flex: 0 1 auto;
@@ -46,16 +47,28 @@ button:hover {
     cursor: pointer;
 }
 
-.warning{
-    color: #D04E4EFF;
+.warning {
+    color: #d04e4eff;
     font-size: 1.2em;
+}
+
+.movie-type-tag {
+    display: inline-block;
+    background-color: var(--color-border);
+    color: var(--color-text);
+    padding: 4px 8px;
+    margin: 5px 0;
+    border-radius: 12px;
+    font-size: 0.8em;
+    text-transform: capitalize;
+    border: 1px solid var(--color-border-hover);
 }
 @keyframes growAndShrink {
     0% {
-        transform: scale(1) ;
+        transform: scale(1);
     }
     50% {
-        transform: scale(2.5)  translateY(50px) translateX(50px);
+        transform: scale(2.5) translateY(50px) translateX(50px);
     }
     100% {
         transform: scale(1);
