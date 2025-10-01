@@ -23,7 +23,7 @@
       <p class="warning">No movies found for that search phrase</p>
     </div>
     <div v-if="searchStatus.searchedForMovie && isQuerying">
-      <p class="searching"><span class="text">Searching...</span></p>
+      <LoadingSpinner text="Searching movies..." size="medium" />
     </div>
 
     <div v-if="searches?.length" class="search-history">
@@ -57,6 +57,7 @@ import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
 import MovieList from './MovieList.vue';
 import ErrorsDisplay from './ErrorsDisplay.vue';
+import LoadingSpinner from './LoadingSpinner.vue';
 
 const movieStore = useMovieStore();
 const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors, searches} = storeToRefs(movieStore);
@@ -89,13 +90,6 @@ const onSearchTagClick = (searchTerm: string) => {
 </script>
 <style lang="scss" scoped>
 .home-search {
-  .searching {
-    .text {
-      display: inline-flex;
-      animation: growAndShrink 2.5s ease-in-out infinite;
-    }
-  }
-
   .clear-list {
     margin-top: 20px;
 

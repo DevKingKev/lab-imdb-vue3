@@ -1,9 +1,7 @@
 <template>
   <section class="movie-page">
     <div v-if="isQuerying">
-      <p class="loading">
-        <span class="text"> Loading...</span>
-      </p>
+      <LoadingSpinner text="Loading movie details..." size="large" />
     </div>
     <div v-else>
       <div v-if="movieToDetail">
@@ -29,6 +27,7 @@ import { useRoute } from 'vue-router';
 import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
 import MovieDetails from '../components/MovieDetails.vue';
 import ErrorsDisplay from '../components/ErrorsDisplay.vue';
+import LoadingSpinner from '../components/LoadingSpinner.vue';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute();
@@ -46,14 +45,4 @@ const onRemoveMovieFromFavouritesClick = (movie: MovieListItem) => {
 };
 </script>
 
-<style lang="scss" scoped>
 
-.movie-page {
-  .loading {
-    .text {
-      display: inline-flex;
-      animation: growAndShrink 2.5s ease-in-out infinite;
-    }
-  }
-}
-</style>
