@@ -3,7 +3,8 @@
     <h1>Movie Search</h1>
     <SearchBox :onInputSearch="onSearchBoxSubmit"
                :searchText="searchText()"
-               :isQuerying="isQuerying"/>
+               :isQuerying="isQuerying"
+               @clearSearch="clearSearchResults"/>
     <div v-if="!searchStatus.searchedForMovie">
       <p>Search for a movie</p>
     </div>
@@ -64,13 +65,18 @@ const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors, searches} =
 
 const searchText = movieStore.getSearchText;
 
+
 const onSearchBoxSubmit = (searchQuery: string) => {
   searchStatus.value.searchedForMovie = true;
   movieStore.updateSearchText(searchQuery);
 };
-const onClearSearchResultsButtonClick = () => {
+const clearSearchResults = () => {
   movieStore.resetSearchData();
   searchStatus.value.searchedForMovie = false;
+};
+
+const onClearSearchResultsButtonClick = () => {
+  clearSearchResults();
 };
 const onAddMovieToFavourites = (movie: MovieListItem) => {
   movieStore.addMovieToFavourites(movie);

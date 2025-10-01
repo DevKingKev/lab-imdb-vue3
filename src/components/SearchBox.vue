@@ -30,6 +30,10 @@ const props = defineProps<{
   isQuerying?: boolean
 }>();
 
+const emit = defineEmits<{
+  clearSearch: []
+}>();
+
 const searchQuery = ref(props.searchText || '');
 
 // Watch for changes in searchText prop and update searchQuery
@@ -65,6 +69,8 @@ const clearSearch = () => {
   if (searchTextInput.value) {
     searchTextInput.value.focus();
   }
+  // Emit clearSearch event
+  emit('clearSearch');
 };
 
 </script>

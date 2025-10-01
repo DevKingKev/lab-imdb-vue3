@@ -51,6 +51,12 @@ const props = defineProps<IMovieCardProps>();
 
 const {movie} = props;
 
+// Create a properly encoded fallback URL with movie title
+const createFallbackUrl = () => {
+
+  return `https://placehold.co/325x325?text=${movie.Title.replace(' ', '+')}`;
+};
+
 // Use the image error handling utility
 const {
   imageSrc: movieImageSrc,
@@ -59,7 +65,7 @@ const {
 } = useImageError(
   () => movie.Poster,
   {
-    fallbackUrl:  `https://placehold.co/325x325?text=${movie.Title.replace(' ', '+')}`,
+    fallbackUrl: createFallbackUrl(),
     showEmojiOnFinalFallback: true
   }
 );
@@ -88,7 +94,9 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       .poster {
         img {
           transform: scale(1.5);
-          transition: transform 0.5s;
+          transition: transform  0.5s;
+
+
         }
       }
 
@@ -110,6 +118,7 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       height: 100%;
       object-fit: contain;
     border-radius: 5px;
+      z-index: 10;
   }
 
     .emoji-placeholder {

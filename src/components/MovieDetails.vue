@@ -2,12 +2,13 @@
   <div class="movie-details">
     <div class="data-display">
       <div class="poster">
-        <img
-          v-if="!showEmojiPlaceholder"
+        <div v-if="!showEmojiPlaceholder" class="image-container">
+          <img
+
           :src="movieImageSrc"
           :alt="movieAltText"
           @error="onImageError"
-        />
+        /></div>
         <div
           v-else
           class="emoji-placeholder"
@@ -90,7 +91,7 @@ const {
 } = useImageError(
   () => movieData.Poster,
   {
-    fallbackUrl: 'https://via.placeholder.com/400x600/cccccc/666666?text=No+Poster',
+    fallbackUrl: `https://placehold.co/325x325?text=${movieData.Title.replace(' ', '+')}`,
     showEmojiOnFinalFallback: true
   }
 );
@@ -140,9 +141,10 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
       border-radius: 5px;
 
       &:hover {
-        transform: scale(1.5) translateY(40px) translateX(50px);
-        transition: transform 0.5s ;
+        transform: scale(1.5) translateY(90px) translateX(60px);
+        transition: transform  0.5s ;
         z-index: 2;
+
       }
     }
 
