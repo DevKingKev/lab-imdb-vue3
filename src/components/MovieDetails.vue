@@ -137,6 +137,8 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
       width: 100%;
       height: 100%;
       object-fit: contain;
+      border-radius: 5px;
+
       &:hover {
         transform: scale(1.5) translateY(40px) translateX(50px);
         transition: transform 0.5s ;

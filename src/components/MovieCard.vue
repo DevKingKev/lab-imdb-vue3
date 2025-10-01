@@ -52,15 +52,15 @@ const props = defineProps<IMovieCardProps>();
 const {movie} = props;
 
 // Use the image error handling utility
-const { 
-  imageSrc: movieImageSrc, 
-  showEmojiPlaceholder, 
-  onImageError 
+const {
+  imageSrc: movieImageSrc,
+  showEmojiPlaceholder,
+  onImageError
 } = useImageError(
   () => movie.Poster,
-  { 
-    fallbackUrl: 'https://via.placeholder.com/300x450/cccccc/666666?text=No+Poster',
-    showEmojiOnFinalFallback: true 
+  {
+    fallbackUrl:  `https://placehold.co/325x325?text=${movie.Title.replace(' ', '+')}`,
+    showEmojiOnFinalFallback: true
   }
 );
 
@@ -109,7 +109,8 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       width: 100%;
       height: 100%;
       object-fit: contain;
-    }
+    border-radius: 5px;
+  }
 
     .emoji-placeholder {
       width: 100%;
