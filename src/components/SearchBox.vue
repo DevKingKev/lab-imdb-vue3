@@ -1,10 +1,21 @@
 <template>
   <div class="search-box">
     <form @submit.prevent="onFormSubmit">
-      <input type="text" placeholder="Search for a movie (2 character minimum)"
-             v-model="searchQuery"
-             autofocus
-             ref="searchTextInput"/>
+      <div class="input-wrapper">
+        <input type="text" placeholder="Search for a movie (2 character minimum)"
+               v-model="searchQuery"
+               autofocus
+               ref="searchTextInput"/>
+        <button
+          v-if="searchQuery.length > 0"
+          type="button"
+          class="clear-button"
+          @click="clearSearch"
+          title="Clear search"
+        >
+          ✕
+        </button>
+      </div>
       <button :disabled="searchIsDisabled">{{ searchButtonText }}</button>
     </form>
   </div>
@@ -48,6 +59,14 @@ const onFormSubmit = () => {
   }
 };
 
+const clearSearch = () => {
+  searchQuery.value = '';
+  // Focus back to the input after clearing
+  if (searchTextInput.value) {
+    searchTextInput.value.focus();
+  }
+};
+
 </script>
 <style lang="scss" scoped>
 .search-box {
@@ -66,16 +85,52 @@ const onFormSubmit = () => {
     align-items: center;
   }
 
-  input {
+  .input-wrapper {
+    position: relative;
     width: 80%;
-    line-height: 3em;
     margin-right: 10px;
+  }
+
+  input {
+    width: 100%;
+    line-height: 3em;
     padding: 1px 10px;
+    padding-right: 35px; // Make room for clear button
+  }
+
+  .clear-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 2px solid #dc3545;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    color: #dc3545;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #dc3545;
+      color: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &:active {
+      transform: translateY(-50%) scale(0.95);
+    }
   }
 
   button {
     height: 46px;
-    padding: 5px 3em;
+
   }
 
   @media (max-width: 800px) {
@@ -84,8 +139,9 @@ const onFormSubmit = () => {
       max-width: 100%;
     }
 
-    input {
+    .input-wrapper {
       width: 100%;
+      margin-right: 0;
       margin-bottom: 10px;
     }
 
