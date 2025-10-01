@@ -95,8 +95,6 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
         img {
           transform: scale(1.5);
           transition: transform  0.5s;
-
-
         }
       }
 
