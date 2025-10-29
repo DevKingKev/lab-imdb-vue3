@@ -2,7 +2,9 @@
   <div class="search-box">
     <form @submit.prevent="onFormSubmit">
       <div class="input-wrapper">
+        <label for="movie-search" class="visually-hidden">Search for movies</label>
         <input
+          id="movie-search"
           type="text"
           placeholder="Search for a movie (2 character minimum)"
           v-model="searchQuery"
@@ -140,6 +142,18 @@ const clearSearch = () => {
 
   button {
     height: 46px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   @media (max-width: 800px) {
