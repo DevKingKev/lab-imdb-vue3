@@ -1,11 +1,11 @@
 <template>
-  <div class="loading-spinner-container">
-    <div class="loading-spinner" :class="size">
+  <div class="loading-spinner-container" role="status" aria-live="polite" :aria-label="text">
+    <div class="loading-spinner" :class="size" aria-hidden="true">
       <div class="spinner-ring outer-ring"></div>
       <div class="spinner-ring middle-ring"></div>
       <div class="spinner-ring inner-ring"></div>
     </div>
-    <p v-if="showText" class="loading-text">{{ text }}</p>
+    <p v-if="showText" class="loading-text" aria-hidden="true">{{ text }}</p>
   </div>
 </template>
 
