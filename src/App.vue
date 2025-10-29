@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
@@ -13,7 +14,7 @@ import { RouterLink, RouterView } from 'vue-router';
       </nav>
     </div>
   </header>
-  <main>
+  <main id="main-content">
     <RouterView />
   </main>
 </template>
@@ -67,13 +68,23 @@ main {
   padding: 10px;
 }
 
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 1000;
+  border-radius: 0 0 4px 0;
+
+  &:focus {
+    top: 0;
+  }
+}
+
 @media (min-width: 1024px) {
-  header {
-  }
-
-  .logo {
-  }
-
   header .wrapper {
     display: flex;
     place-items: flex-start;

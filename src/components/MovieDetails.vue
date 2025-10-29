@@ -8,7 +8,7 @@
         <div v-else class="emoji-placeholder" :title="movieAltText">🎬</div>
       </div>
       <div class="movie-info">
-        <h3>{{ movieData.Title }}</h3>
+        <h1>{{ movieData.Title }}</h1>
         <div class="movie-details">
           <div class="movie-attribute movie-type">
             <span class="data-value movie-type-tag">{{ movieData.Type }}</span>
