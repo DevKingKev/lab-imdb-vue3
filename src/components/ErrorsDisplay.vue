@@ -1,5 +1,5 @@
 <template>
-  <div class="errors-display" v-if="errors.length">
+  <div class="errors-display" v-if="errors.length" role="alert" aria-live="polite">
     <div class="errors warning">
       <p v-for="(error, index) in errors" :key="index">
         {{ error }}
