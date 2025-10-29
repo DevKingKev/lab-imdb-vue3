@@ -13,8 +13,9 @@
           v-if="searchQuery.length > 0"
           type="button"
           class="clear-button"
-          @click="clearSearch"
+          aria-label="Clear search input"
           title="Clear search"
+          @click="clearSearch"
         >
           ✕
         </button>

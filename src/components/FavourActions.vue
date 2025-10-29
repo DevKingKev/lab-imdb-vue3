@@ -1,10 +1,24 @@
 <template>
   <div class="favour-actions">
-    <div class="button add" title="Add to favourites" v-if="!movie.isFavourite">
-      <button v-on:click="onAddToFavouritesButtonClick" class="add">♡</button>
+    <div class="button add" v-if="!movie.isFavourite">
+      <button
+        v-on:click="onAddToFavouritesButtonClick"
+        class="add"
+        :aria-label="`Add ${movie.Title} to favourites`"
+        title="Add to favourites"
+      >
+        ♡
+      </button>
     </div>
-    <div class="button remove" title="Remove from favourites" v-if="movie.isFavourite">
-      <button v-on:click="onRemoveFromFavouritesButtonClick" class="remove">♥</button>
+    <div class="button remove" v-if="movie.isFavourite">
+      <button
+        v-on:click="onRemoveFromFavouritesButtonClick"
+        class="remove"
+        :aria-label="`Remove ${movie.Title} from favourites`"
+        title="Remove from favourites"
+      >
+        ♥
+      </button>
     </div>
   </div>
 </template>

@@ -32,14 +32,16 @@
     <div v-if="searches?.length" class="search-history">
       <h3>Recent Searches</h3>
       <div class="search-tags">
-        <span
+        <button
           v-for="search in searches"
           :key="search"
+          type="button"
           class="search-tag"
+          :aria-label="`Search for the movie '${search}' again`"
           @click="onSearchTagClick(search)"
         >
           {{ search }}
-        </span>
+        </button>
       </div>
     </div>
 
