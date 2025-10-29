@@ -1,6 +1,9 @@
 <template>
   <div class="movie-card" :key="movie.imdbID">
-    <router-link :to="{ name: 'movie', params: { id: movie.imdbID } }">
+    <router-link
+      :to="{ name: 'movie', params: { id: movie.imdbID } }"
+      :aria-label="`View details for ${movie.Title}, ${movie.Year}, ${movie.Type}`"
+    >
       <div class="data-display">
         <div class="poster">
           <img
