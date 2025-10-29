@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125"/>
+    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
       <nav>
@@ -14,7 +14,7 @@ import { RouterLink, RouterView } from 'vue-router';
     </div>
   </header>
   <main>
-    <RouterView/>
+    <RouterView />
   </main>
 </template>
 
@@ -27,7 +27,7 @@ header {
   padding-right: calc(var(--section-gap) / 2);
   line-height: 1.5;
   height: $headerHeight;
-  border-bottom: 1px solid #0F0;
+  border-bottom: 1px solid #0f0;
 }
 
 .logo {
@@ -46,7 +46,6 @@ nav {
 
 nav a.router-link-exact-active {
   color: var(--color-text);
-
 }
 
 nav a.router-link-exact-active:hover {
@@ -57,7 +56,6 @@ nav a {
   display: inline-block;
   padding: 1rem;
   border-left: 1px solid var(--color-border);
-
 }
 
 nav a:first-of-type {
@@ -65,14 +63,12 @@ nav a:first-of-type {
 }
 
 main {
-
   overflow-y: auto;
   padding: 10px;
 }
 
 @media (min-width: 1024px) {
   header {
-
   }
 
   .logo {
@@ -97,7 +93,6 @@ main {
 }
 
 @media (max-width: 400px) {
-
   header {
     padding-right: 0;
 
@@ -105,6 +100,5 @@ main {
       margin-right: 1rem;
     }
   }
-
 }
 </style>

@@ -3,37 +3,26 @@
     <div class="data-display">
       <div class="poster">
         <div v-if="!showEmojiPlaceholder" class="image-container">
-          <img
-
-          :src="movieImageSrc"
-          :alt="movieAltText"
-          @error="onImageError"
-        /></div>
-        <div
-          v-else
-          class="emoji-placeholder"
-          :title="movieAltText"
-        >
-          🎬
+          <img :src="movieImageSrc" :alt="movieAltText" @error="onImageError" />
         </div>
+        <div v-else class="emoji-placeholder" :title="movieAltText">🎬</div>
       </div>
       <div class="movie-info">
         <h3>{{ movieData.Title }}</h3>
         <div class="movie-details">
-          <div class="movie-attribute movie-type ">
-            <span  class="data-value movie-type-tag">{{ movieData.Type }}</span>
+          <div class="movie-attribute movie-type">
+            <span class="data-value movie-type-tag">{{ movieData.Type }}</span>
           </div>
           <div class="movie-attribute movie-year">
-            <span class="data-key">Year:</span> <span
-            class="data-value">{{ movieData.Year }}</span>
+            <span class="data-key">Year:</span> <span class="data-value">{{ movieData.Year }}</span>
           </div>
           <div class="movie-attribute movie-genre">
-            <span class="data-key">Genre:</span> <span
-            class="data-value">{{ movieData.Genre }}</span>
+            <span class="data-key">Genre:</span>
+            <span class="data-value">{{ movieData.Genre }}</span>
           </div>
           <div class="movie-attribute movie-director">
-            <span class="data-key">Director:</span> <span
-            class="data-value">{{ movieData.Director }}</span>
+            <span class="data-key">Director:</span>
+            <span class="data-value">{{ movieData.Director }}</span>
           </div>
           <div class="movie-attribute movie-actors column">
             <span class="data-key">Actors:</span>
@@ -45,17 +34,18 @@
           </div>
           <div class="movie-attribute movie-ratings column">
             <span class="data-key">Ratings:</span>
-            <MovieRatings :movieRatings="movieData.Ratings"/>
+            <MovieRatings :movieRatings="movieData.Ratings" />
           </div>
         </div>
       </div>
     </div>
-    <FavorActions :isFavourited="isFavourited"
-                  :movie="movieListItem"
-                  :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
-                  :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
-                  v-if="props.onAddMovieToFavouritesClick && props.onRemoveMovieFromFavouritesClick"/>
-
+    <FavorActions
+      :isFavourited="isFavourited"
+      :movie="movieListItem"
+      :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
+      :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
+      v-if="props.onAddMovieToFavouritesClick && props.onRemoveMovieFromFavouritesClick"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -67,12 +57,12 @@ import { type MovieDetails, type MovieListItem } from '@/stores/movieStore';
 import { useImageError } from '@/util/globalUtils';
 
 const props = defineProps<{
-  movieData: MovieDetails,
+  movieData: MovieDetails;
   onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
 
-const {movieData} = props;
+const { movieData } = props;
 const isFavourited = true;
 const movieListItem = ref({
   Title: movieData.Title,
@@ -80,26 +70,22 @@ const movieListItem = ref({
   imdbID: movieData.imdbID,
   Type: movieData.Type,
   Poster: movieData.Poster,
-  isFavourite: movieData.isFavourite
+  isFavourite: movieData.isFavourite,
 });
 
 // Use the image error handling utility
 const {
   imageSrc: movieImageSrc,
   showEmojiPlaceholder,
-  onImageError
-} = useImageError(
-  () => movieData.Poster,
-  {
-    fallbackUrl: `https://placehold.co/325x325?text=${movieData.Title.replace(' ', '+')}`,
-    showEmojiOnFinalFallback: true
-  }
-);
+  onImageError,
+} = useImageError(() => movieData.Poster, {
+  fallbackUrl: `https://placehold.co/325x325?text=${movieData.Title.replace(' ', '+')}`,
+  showEmojiOnFinalFallback: true,
+});
 
 const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
-
 </script>
-<style lang="scss" >
+<style lang="scss">
 .movie-details {
   position: relative;
   display: flex;
@@ -142,9 +128,8 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
 
       &:hover {
         transform: scale(1.5) translateY(90px) translateX(60px);
-        transition: transform  0.5s ;
+        transition: transform 0.5s;
         z-index: 2;
-
       }
     }
 
@@ -179,11 +164,12 @@ const movieAltText = computed(() => `Poster of the movie ${movieData.Title}`);
     line-height: 2em;
     padding: 0;
 
-   .button{
-     button{
-      border-radius: 50px ;
-      font-size: 2.5em;
-    }}
+    .button {
+      button {
+        border-radius: 50px;
+        font-size: 2.5em;
+      }
+    }
   }
 
   @media (max-width: 800px) {

@@ -34,7 +34,7 @@ const onSortChange = () => {
   display: flex;
   align-items: center;
   gap: 10px;
- width: 100px;
+  width: 100px;
   margin-left: auto;
 
   label {

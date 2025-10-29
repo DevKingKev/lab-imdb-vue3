@@ -1,26 +1,28 @@
 <template>
   <div class="home-search">
     <h1>Movie Search</h1>
-    <SearchBox :onInputSearch="onSearchBoxSubmit"
-               :searchText="searchText()"
-               :isQuerying="isQuerying"
-               @clearSearch="clearSearchResults"/>
+    <SearchBox
+      :onInputSearch="onSearchBoxSubmit"
+      :searchText="searchText()"
+      :isQuerying="isQuerying"
+      @clearSearch="clearSearchResults"
+    />
     <div v-if="!searchStatus.searchedForMovie">
       <p>Search for a movie</p>
     </div>
     <div v-if="searchStatus.searchedForMovie && movies.length">
-      <MovieList :movieList="movies"
-                 :onAddMovieToFavouritesClick="onAddMovieToFavourites"
-                 :onRemoveMovieFromFavouritesClick="onRemoveMovieFromFavourites"
-                 :favouriteMovies="favouriteMovies"
+      <MovieList
+        :movieList="movies"
+        :onAddMovieToFavouritesClick="onAddMovieToFavourites"
+        :onRemoveMovieFromFavouritesClick="onRemoveMovieFromFavourites"
+        :favouriteMovies="favouriteMovies"
       />
-            <div class="clear-list">
+      <div class="clear-list">
         <button @click="onClearSearchResultsButtonClick">Clear search results</button>
       </div>
-
     </div>
 
-     <div v-if="searchStatus.searchedForMovie && !movies.length && !isQuerying">
+    <div v-if="searchStatus.searchedForMovie && !movies.length && !isQuerying">
       <p class="warning">No movies found for that search phrase</p>
     </div>
     <div v-if="searchStatus.searchedForMovie && isQuerying">
@@ -41,11 +43,8 @@
       </div>
     </div>
 
-
-
-
     <div v-if="apiErrors.length">
-      <ErrorsDisplay :errors="apiErrors"/>
+      <ErrorsDisplay :errors="apiErrors" />
     </div>
   </div>
 </template>
@@ -53,18 +52,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-
-import { type  MovieListItem, useMovieStore } from '@/stores/movieStore';
+import { type MovieListItem, useMovieStore } from '@/stores/movieStore';
 import SearchBox from './SearchBox.vue';
 import MovieList from './MovieList.vue';
 import ErrorsDisplay from './ErrorsDisplay.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 const movieStore = useMovieStore();
-const {movies, isQuerying, searchStatus, favouriteMovies, apiErrors, searches} = storeToRefs(movieStore);
+const { movies, isQuerying, searchStatus, favouriteMovies, apiErrors, searches } =
+  storeToRefs(movieStore);
 
 const searchText = movieStore.getSearchText;
-
 
 const onSearchBoxSubmit = (searchQuery: string) => {
   searchStatus.value.searchedForMovie = true;
@@ -92,7 +90,6 @@ const onSearchTagClick = (searchTerm: string) => {
     movieStore.updateSearchText(searchTerm);
   }
 };
-
 </script>
 <style lang="scss" scoped>
 .home-search {

@@ -1,19 +1,21 @@
 <template>
   <div class="movie-list">
     <div class="header-section">
-      <h2>{{ listHeaderText }} <span class="count">({{ movieList.length }})</span></h2>
+      <h2>
+        {{ listHeaderText }} <span class="count">({{ movieList.length }})</span>
+      </h2>
       <SortSelector :onSortChange="onSortChange" :defaultSort="currentSort" />
     </div>
     <div class="results-list">
-      <MovieCard v-for="movieItem in sortedMovieList"
-                 :key="movieItem.imdbID"
-                 :movie="movieItem"
-                 :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
-                 :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
+      <MovieCard
+        v-for="movieItem in sortedMovieList"
+        :key="movieItem.imdbID"
+        :movie="movieItem"
+        :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
+        :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
       />
     </div>
   </div>
-
 </template>
 <script setup lang="ts">
 import { computed, ref, withDefaults } from 'vue';
@@ -73,7 +75,6 @@ const onSortChange = (sortBy: SortOption) => {
   }
   currentSort.value = sortBy;
 };
-
 </script>
 <style lang="scss" scoped>
 .movie-list {

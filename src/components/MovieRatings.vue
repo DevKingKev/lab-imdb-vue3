@@ -1,20 +1,18 @@
 <template>
   <div class="data-value movie-ratings">
     <div class="movie-attribute movie-rating" v-for="rating in movieRatings" :key="rating.Source">
-      <span class="source">{{ rating.Source }}:</span> <span class="data-value">{{ rating.Value }}</span>
+      <span class="source">{{ rating.Source }}:</span>
+      <span class="data-value">{{ rating.Value }}</span>
     </div>
-
-
   </div>
 </template>
 <script setup lang="ts">
 import { type MovieRating } from '@/stores/movieStore';
 
 const props = defineProps<{
-  movieRatings: MovieRating[],
+  movieRatings: MovieRating[];
 }>();
-const {movieRatings} = props;
-
+const { movieRatings } = props;
 </script>
 <style lang="scss" scoped>
 .movie-ratings {
@@ -45,9 +43,7 @@ const {movieRatings} = props;
     }
   }
 
-
   @media (max-width: 800px) {
-
   }
 }
 </style>

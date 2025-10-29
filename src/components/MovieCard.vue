@@ -9,21 +9,15 @@
             :alt="moviePosterAltText"
             @error="onImageError"
           />
-          <div
-            v-else
-            class="emoji-placeholder"
-            :title="moviePosterAltText"
-          >
-            🎬
-          </div>
+          <div v-else class="emoji-placeholder" :title="moviePosterAltText">🎬</div>
         </div>
         <div class="movie-info">
           <h3>{{ movie.Title }}</h3>
           <p class="movie-details">
             <span class="release-year">{{ movie.Year }}</span>
-           </p>
+          </p>
           <p class="movie-details">
-             <span class="movie-type-tag">{{ movie.Type }}</span>
+            <span class="movie-type-tag">{{ movie.Type }}</span>
           </p>
         </div>
       </div>
@@ -31,14 +25,15 @@
     <FavorActions
       :movie="movie"
       :onAddMovieToFavouritesClick="props.onAddMovieToFavouritesClick"
-      :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"/>
+      :onRemoveMovieFromFavouritesClick="props.onRemoveMovieFromFavouritesClick"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
 
 import FavorActions from './FavourActions.vue';
-import { type  MovieListItem } from '@/stores/movieStore';
+import { type MovieListItem } from '@/stores/movieStore';
 import { useImageError } from '@/util/globalUtils';
 
 interface IMovieCardProps {
@@ -49,11 +44,10 @@ interface IMovieCardProps {
 
 const props = defineProps<IMovieCardProps>();
 
-const {movie} = props;
+const { movie } = props;
 
 // Create a properly encoded fallback URL with movie title
 const createFallbackUrl = () => {
-
   return `https://placehold.co/325x325?text=${movie.Title.replace(' ', '+')}`;
 };
 
@@ -61,17 +55,13 @@ const createFallbackUrl = () => {
 const {
   imageSrc: movieImageSrc,
   showEmojiPlaceholder,
-  onImageError
-} = useImageError(
-  () => movie.Poster,
-  {
-    fallbackUrl: createFallbackUrl(),
-    showEmojiOnFinalFallback: true
-  }
-);
+  onImageError,
+} = useImageError(() => movie.Poster, {
+  fallbackUrl: createFallbackUrl(),
+  showEmojiOnFinalFallback: true,
+});
 
 const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
-
 </script>
 <style lang="scss" scoped>
 .movie-card {
@@ -94,10 +84,9 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       .poster {
         img {
           transform: scale(1.5);
-          transition: transform  0.5s;
+          transition: transform 0.5s;
         }
       }
-
     }
   }
 
@@ -115,9 +104,9 @@ const moviePosterAltText = computed(() => `Poster for ${movie.Title}`);
       width: 100%;
       height: 100%;
       object-fit: contain;
-    border-radius: 5px;
+      border-radius: 5px;
       z-index: 10;
-  }
+    }
 
     .emoji-placeholder {
       width: 100%;

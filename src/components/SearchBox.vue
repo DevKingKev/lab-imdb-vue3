@@ -2,10 +2,13 @@
   <div class="search-box">
     <form @submit.prevent="onFormSubmit">
       <div class="input-wrapper">
-        <input type="text" placeholder="Search for a movie (2 character minimum)"
-               v-model="searchQuery"
-               autofocus
-               ref="searchTextInput"/>
+        <input
+          type="text"
+          placeholder="Search for a movie (2 character minimum)"
+          v-model="searchQuery"
+          autofocus
+          ref="searchTextInput"
+        />
         <button
           v-if="searchQuery.length > 0"
           type="button"
@@ -19,27 +22,29 @@
       <button :disabled="searchIsDisabled">{{ searchButtonText }}</button>
     </form>
   </div>
-
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 
 const props = defineProps<{
-  onInputSearch: (searchQuery: string) => void,
-  searchText: string,
-  isQuerying?: boolean
+  onInputSearch: (searchQuery: string) => void;
+  searchText: string;
+  isQuerying?: boolean;
 }>();
 
 const emit = defineEmits<{
-  clearSearch: []
+  clearSearch: [];
 }>();
 
 const searchQuery = ref(props.searchText || '');
 
 // Watch for changes in searchText prop and update searchQuery
-watch(() => props.searchText, (newSearchText) => {
-  searchQuery.value = newSearchText || '';
-});
+watch(
+  () => props.searchText,
+  (newSearchText) => {
+    searchQuery.value = newSearchText || '';
+  },
+);
 const searchTextInput = ref<HTMLInputElement | null>(null);
 
 const searchButtonText = computed(() => {
@@ -51,11 +56,10 @@ const searchIsDisabled = computed(() => {
 });
 onMounted(() => {
   setTimeout(() => {
-    if ((searchTextInput.value)) {
+    if (searchTextInput.value) {
       searchTextInput.value.focus();
     }
   }, 500);
-
 });
 const onFormSubmit = () => {
   if (props.onInputSearch) {
@@ -72,7 +76,6 @@ const clearSearch = () => {
   // Emit clearSearch event
   emit('clearSearch');
 };
-
 </script>
 <style lang="scss" scoped>
 .search-box {
@@ -136,7 +139,6 @@ const clearSearch = () => {
 
   button {
     height: 46px;
-
   }
 
   @media (max-width: 800px) {
@@ -150,7 +152,6 @@ const clearSearch = () => {
       margin-right: 0;
       margin-bottom: 10px;
     }
-
   }
 }
 </style>

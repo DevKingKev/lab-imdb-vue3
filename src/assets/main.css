@@ -1,93 +1,93 @@
-@import "./base.css";
+@import './base.css';
 
 #app {
-    display: grid;
-    grid-template-rows: 100px 1fr;
-    width: 100%;
-    height: 100vh;
-    max-width: 1920px;
-    margin: 0 auto;
-    font-weight: normal;
-    overflow-y: hidden;
+  display: grid;
+  grid-template-rows: 100px 1fr;
+  width: 100%;
+  height: 100vh;
+  max-width: 1920px;
+  margin: 0 auto;
+  font-weight: normal;
+  overflow-y: hidden;
 }
 
 a,
 .green {
-    text-decoration: none;
-    color: hsla(160, 100%, 37%, 1);
-    transition: 0.4s;
-    padding: 3px;
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
 }
 
 div,
 section {
-    display: flex;
-    flex-direction: column;
-    flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
 }
 
 h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
 }
 
 h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
 }
 h3 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
 }
 
 button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .warning {
-    color: #d04e4eff;
-    font-size: 1.2em;
+  color: #d04e4eff;
+  font-size: 1.2em;
 }
 
 .movie-type-tag {
-    display: inline-block;
-    background-color: var(--color-border);
-    color: var(--color-text);
-    padding: 4px 8px;
-    margin: 5px 0;
-    border-radius: 12px;
-    font-size: 0.8em;
-    text-transform: capitalize;
-    border: 1px solid var(--color-border-hover);
+  display: inline-block;
+  background-color: var(--color-border);
+  color: var(--color-text);
+  padding: 4px 8px;
+  margin: 5px 0;
+  border-radius: 12px;
+  font-size: 0.8em;
+  text-transform: capitalize;
+  border: 1px solid var(--color-border-hover);
 }
 @keyframes growAndShrink {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(2.5) translateY(50px) translateX(50px);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2.5) translateY(50px) translateX(50px);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 @media (hover: hover) {
-    a:hover {
-        background-color: hsla(160, 100%, 37%, 0.2);
-    }
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
 }
 
 @media (min-width: 1024px) {
-    body {
-        display: flex;
-        place-items: start;
-    }
+  body {
+    display: flex;
+    place-items: start;
+  }
 
-    #app {
-        display: grid;
-        padding: 2rem;
-    }
+  #app {
+    display: grid;
+    padding: 2rem;
+  }
 }

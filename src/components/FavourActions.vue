@@ -1,20 +1,14 @@
 <template>
   <div class="favour-actions">
-    <div class="button add" title="Add to favourites"
-         v-if="!movie.isFavourite">
+    <div class="button add" title="Add to favourites" v-if="!movie.isFavourite">
       <button v-on:click="onAddToFavouritesButtonClick" class="add">♡</button>
     </div>
-    <div class="button remove" title="Remove from favourites"
-         v-if="movie.isFavourite"
-    >
+    <div class="button remove" title="Remove from favourites" v-if="movie.isFavourite">
       <button v-on:click="onRemoveFromFavouritesButtonClick" class="remove">♥</button>
     </div>
   </div>
-
 </template>
 <script setup lang="ts">
-
-
 import { type MovieListItem } from '@/stores/movieStore';
 
 const props = defineProps<{
@@ -22,7 +16,7 @@ const props = defineProps<{
   onAddMovieToFavouritesClick?: (movie: MovieListItem) => void;
   onRemoveMovieFromFavouritesClick?: (movie: MovieListItem) => void;
 }>();
-const {movie} = props;
+const { movie } = props;
 const onAddToFavouritesButtonClick = () => {
   if (props.onAddMovieToFavouritesClick) {
     props.onAddMovieToFavouritesClick(movie);
@@ -33,8 +27,6 @@ const onRemoveFromFavouritesButtonClick = () => {
     props.onRemoveMovieFromFavouritesClick(movie);
   }
 };
-
-
 </script>
 <style lang="scss" scoped>
 $componentDimensions: 50px;
@@ -101,7 +93,6 @@ $componentDimensionsForSmallerScreen: 80px;
     button {
       border-radius: calc($componentDimensionsForSmallerScreen / 2);
     }
-
   }
 
   @media (max-width: 400px) {
@@ -113,7 +104,5 @@ $componentDimensionsForSmallerScreen: 80px;
       border-radius: calc($componentDimensions / 2);
     }
   }
-
-
 }
 </style>

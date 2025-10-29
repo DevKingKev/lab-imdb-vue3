@@ -30,5 +30,12 @@ export default [
       'cypress/support/**/*.{js,ts,jsx,tsx}'
     ],
   },
+  {
+    name: 'app/custom-rules',
+    rules: {
+      'semi': ['error', 'always'],
+      '@typescript-eslint/semi': ['error', 'always'],
+    },
+  },
   skipFormatting,
 ]

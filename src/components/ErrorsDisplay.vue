@@ -1,32 +1,23 @@
 <template>
   <div class="errors-display" v-if="errors.length">
-    <div class="errors warning" >
+    <div class="errors warning">
       <p v-for="(error, index) in errors" :key="index">
-        {{error}}
+        {{ error }}
       </p>
     </div>
   </div>
-
 </template>
 <script setup lang="ts">
 const props = defineProps<{
   errors: string[];
 }>();
-const {errors} = props;
-
+const { errors } = props;
 </script>
 <style lang="scss" scoped>
-
 .errors-display {
-   margin: 20px 0;
-
+  margin: 20px 0;
 
   @media (max-width: 800px) {
-
-
-
   }
-
 }
-
 </style>

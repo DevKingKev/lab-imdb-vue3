@@ -24,7 +24,7 @@ interface LoadingSpinnerProps {
 withDefaults(defineProps<LoadingSpinnerProps>(), {
   text: 'Loading...',
   showText: true,
-  size: 'medium'
+  size: 'medium',
 });
 </script>
 
