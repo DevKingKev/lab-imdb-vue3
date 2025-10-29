@@ -107,7 +107,7 @@ const clearSearch = () => {
     width: 100%;
     line-height: 3em;
     padding: 1px 10px;
-    padding-right: 35px; // Make room for clear button
+    padding-right: 55px; // Make room for clear button (44px + spacing)
   }
 
   .clear-button {
@@ -118,9 +118,9 @@ const clearSearch = () => {
     background: white;
     border: 2px solid #dc3545;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
     color: #dc3545;
     cursor: pointer;
     display: flex;
@@ -142,6 +142,7 @@ const clearSearch = () => {
 
   button {
     height: 46px;
+    padding: 0 20px
   }
 
   .visually-hidden {
